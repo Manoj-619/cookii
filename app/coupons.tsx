@@ -1,0 +1,2 @@
+import React from 'react';import {Text,View} from 'react-native';import {Screen,Header,styles} from '../src/components/ui';import {coupons} from '../src/data/coupons';
+export default function Coupons(){return <Screen><Header title="All Offers"/>{coupons.map(c=><View key={c.id} style={[styles.card,{opacity:c.active?1:.6}]}><Text style={styles.heading}>🎁 {c.title}</Text><Text style={styles.body}>{c.description}</Text><Text style={[styles.muted,{marginTop:10}]}>{c.active?'Valid till':'Expired'} {c.validTill}</Text></View>)}</Screen>}

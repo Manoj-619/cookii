@@ -1,0 +1,2 @@
+import {MealType} from '../types';
+export const services:{id:MealType;label:string;emoji:string;description:string;gradient:[string,string]}[]=[['breakfast','Breakfast','🥞','Start fresh'],['lunch','Lunch','🍛','Midday comfort'],['dinner','Dinner','🍲','Evening favorites'],['snacks','Snacks','🥟','Small bites'],['meal_prep','Meal Prep','🥗','Plan ahead'],['party','Party','🎉','Celebrate together'],['special_diet','Special Diet','🥑','Made for you']].map(([id,label,emoji,description])=>({id:id as MealType,label,emoji,description,gradient:['#E4F8EA','#FFFFFF']}));

@@ -1,0 +1,3 @@
+import {WEEKDAY_HOURLY_RATE,WEEKEND_HOURLY_RATE,PASS_DISCOUNT,PLATFORM_FEE} from '../data/pricing';
+export function calculatePrice({minutes,date,isPassActive}:{minutes:number;date:string|Date;isPassActive:boolean}){const day=new Date(typeof date==='string'?`${date}T12:00:00`:date).getDay();const original=Math.round(minutes/60*(day===0||day===6?WEEKEND_HOURLY_RATE:WEEKDAY_HOURLY_RATE));const payable=isPassActive?Math.round(original*(1-PASS_DISCOUNT)):original;const savings=original-payable;const platformFee=Math.round(payable*PLATFORM_FEE);return {original,payable,savings,platformFee,total:payable+platformFee};}
+export const formatINR=(amount:number)=>`₹${amount.toLocaleString('en-IN',{maximumFractionDigits:2})}`;

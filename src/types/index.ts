@@ -1,0 +1,10 @@
+export type MealType='breakfast'|'lunch'|'dinner'|'snacks'|'meal_prep'|'party'|'special_diet';
+export type Cuisine='South Indian'|'North Indian'|'Continental'|'Chinese'|'Bengali'|'Gujarati';
+export type Cook={id:string;name:string;initials:string;rating:number;totalBookings:number;languages:string[];cuisines:Cuisine[];verified:boolean;bio:string;yearsExperience:number;avatarColor:string};
+export type Address={id:string;label:'Home'|'Work'|'Other';line:string;landmark?:string;isSelected:boolean};
+export type Duration={minutes:60|90|120|150|180;basePrice:number;discountedPrice:number};
+export type BookingMode='scheduled'|'instant'; export type BookingStatus='upcoming'|'completed'|'cancelled';
+export type Booking={id:string;cookId:string|null;cookName:string;mode:BookingMode;date:string;startTime:string;durationMinutes:number;mealTypes:MealType[];address:Address;amountPaid:number;savings:number;status:BookingStatus;createdAt:string;paymentRef:string};
+export type WalletTxn={id:string;title:string;amount:number;status:'Completed'|'Received'|'Pending';createdAt:string};
+export type Coupon={id:string;title:string;description:string;validTill:string;active:boolean};
+export type BookingDraft={mode:BookingMode;date:string;startTime:string;durationMinutes:number;cookId:string|null;mealTypes:MealType[];addressId:string};

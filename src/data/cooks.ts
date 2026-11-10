@@ -1,0 +1,5 @@
+import {Cook,Cuisine} from '../types';
+const names=['Lakshmi','Savitri','Meena Kumari','Parbati Singh','Gouri Mondal','Ambika','Runa Khatun','Sushma Kumari'];
+const cuisines:Cuisine[][]=[['South Indian','North Indian'],['North Indian','Gujarati'],['South Indian','Chinese'],['North Indian','Continental'],['Bengali','North Indian'],['South Indian','Continental'],['Bengali','Chinese'],['North Indian','Gujarati']];
+const languages=[['Kannada','Tamil'],['Hindi','Kannada'],['Tamil','English'],['Hindi','English'],['Bengali','Hindi'],['Telugu','Kannada'],['Bengali','English'],['Hindi','Kannada']];
+export const cooks:Cook[]=names.map((name,i)=>({id:`cook-${i+1}`,name,initials:name.split(' ').map(w=>w[0]).join(''),rating:[4.9,4.8,4.7,4.9,4.6,5.0,4.8,4.7][i],totalBookings:[320,278,190,365,140,400,95,210][i],languages:languages[i],cuisines:cuisines[i],verified:true,bio:`${name} prepares delicious home-style meals with care, freshness and attention to your preferences.`,yearsExperience:3+i,avatarColor:['#D8F3E0','#DDF5E9','#E2F3D9'][i%3]}));

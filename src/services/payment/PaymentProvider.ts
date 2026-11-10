@@ -1,0 +1,3 @@
+import {PaymentRequest,PaymentResult} from './types';
+export interface PaymentProvider{createOrder(request:PaymentRequest,method:PaymentResult['method']):Promise<PaymentResult>;verify(referenceId:string):Promise<boolean>}
+export class MockPaymentProvider implements PaymentProvider{async createOrder(_request:PaymentRequest,method:PaymentResult['method']):Promise<PaymentResult>{await new Promise(r=>setTimeout(r,1200));const chance=Math.random();return {status:chance<0.9?'success':chance<0.95?'failed':'cancelled',referenceId:`MOCK-${Date.now()}`,method};}async verify(referenceId:string){return referenceId.startsWith('MOCK-');}}
