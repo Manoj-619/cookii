@@ -1,0 +1,906 @@
+openapi: 3.0.3
+info:
+  title: Cookii API
+  description: Production-grade on-demand home cook booking platform for Bengaluru, India.
+  version: 1.0.0
+  contact:
+    name: Cookii Engineering
+    email: engineering@cookii.in
+servers:
+  - url: http://localhost:4000/api/v1
+    description: Local Development Server
+  - url: https://api.cookii.in/api/v1
+    description: Production API
+
+paths:
+  # ==========================================
+  # AUTHENTICATION
+  # ==========================================
+  /auth/otp/send:
+    post:
+      summary: Send OTP for mobile login or registration
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendOtpDto'
+      responses:
+        '200':
+          description: OTP dispatched successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SendOtpResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+
+  /auth/otp/verify:
+    post:
+      summary: Verify OTP and exchange for JWT tokens
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyOtpDto'
+      responses:
+        '200':
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthSuccessResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /auth/token/refresh:
+    post:
+      summary: Rotate refresh token to obtain a new access token
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshTokenDto'
+      responses:
+        '200':
+          description: Token rotated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+  # ==========================================
+  # USERS & ADDRESSES
+  # ==========================================
+  /users/me:
+    get:
+      summary: Get authenticated user profile
+      tags: [Users]
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: User profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfileResponse'
+    patch:
+      summary: Update user profile
+      tags: [Users]
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserDto'
+      responses:
+        '200':
+          description: Updated user profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfileResponse'
+
+  /users/me/addresses:
+    get:
+      summary: List user's saved kitchen addresses
+      tags: [Addresses]
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: List of saved addresses
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean, example: true }
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AddressDto'
+    post:
+      summary: Save a new address with GPS coordinates
+      tags: [Addresses]
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAddressDto'
+      responses:
+        '201':
+          description: Address created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressResponse'
+
+  # ==========================================
+  # COOK ONBOARDING & PARTNER PROFILE
+  # ==========================================
+  /cooks/onboard:
+    post:
+      summary: Submit or update cook partner onboarding profile
+      tags: [Cooks]
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CookOnboardDto'
+      responses:
+        '200':
+          description: Cook profile updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CookProfileResponse'
+
+  /cooks/documents:
+    post:
+      summary: Upload KYC document (Aadhaar, Police clearance, Photo)
+      tags: [Cooks]
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UploadDocumentDto'
+      responses:
+        '201':
+          description: Document registered for verification
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentUploadResponse'
+
+  /cooks/me/availability:
+    post:
+      summary: Toggle cook online/offline availability for jobs
+      tags: [Cooks]
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [isOnline]
+              properties:
+                isOnline: { type: boolean, example: true }
+      responses:
+        '200':
+          description: Availability updated
+
+  /cooks/me/location:
+    post:
+      summary: Publish cook real-time GPS location
+      tags: [Cooks]
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LocationUpdateDto'
+      responses:
+        '200':
+          description: Location updated successfully
+
+  # ==========================================
+  # PRICING & SERVICES
+  # ==========================================
+  /services:
+    get:
+      summary: List available home meal services
+      tags: [Services]
+      responses:
+        '200':
+          description: Available services list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServicesListResponse'
+
+  /pricing/calculate:
+    post:
+      summary: Calculate transparent fare breakdown before booking
+      tags: [Pricing]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CalculateFareDto'
+      responses:
+        '200':
+          description: Detailed transparent fare breakdown
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FareBreakdownResponse'
+
+  # ==========================================
+  # BOOKINGS & STATE MACHINE
+  # ==========================================
+  /bookings:
+    post:
+      summary: Create a scheduled or instant cook booking
+      tags: [Bookings]
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBookingDto'
+      responses:
+        '201':
+          description: Booking created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingResponse'
+    get:
+      summary: List bookings with filters
+      tags: [Bookings]
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: status
+          in: query
+          schema: { type: string }
+        - name: page
+          in: query
+          schema: { type: integer, default: 1 }
+        - name: limit
+          in: query
+          schema: { type: integer, default: 10 }
+      responses:
+        '200':
+          description: Paginated booking list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingsListResponse'
+
+  /bookings/{id}:
+    get:
+      summary: Get single booking details, timeline, and cook ETA
+      tags: [Bookings]
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Single booking detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingResponse'
+
+  /bookings/{id}/verify-otp:
+    post:
+      summary: Cook enters customer 4-digit OTP to start service (ARRIVED -> IN_PROGRESS)
+      tags: [Bookings]
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [otp]
+              properties:
+                otp: { type: string, example: "4921", minLength: 4, maxLength: 4 }
+      responses:
+        '200':
+          description: Service started successfully
+        '400':
+          description: Invalid OTP
+
+  /bookings/{id}/complete:
+    post:
+      summary: Cook marks cooking complete (IN_PROGRESS -> COMPLETED)
+      tags: [Bookings]
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Service completed, invoice generated
+
+  /bookings/{id}/cancel:
+    post:
+      summary: Cancel booking with reason and fee computation
+      tags: [Bookings]
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [reason]
+              properties:
+                reason: { type: string, example: "Change of plans" }
+      responses:
+        '200':
+          description: Booking cancelled
+
+  # ==========================================
+  # MATCHING & JOB OFFERS
+  # ==========================================
+  /cooks/me/job-offers:
+    get:
+      summary: Get active incoming job offers for the authenticated cook
+      tags: [Matching]
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: List of active job offers
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean, example: true }
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/JobOfferDto'
+
+  /cooks/job-offers/{id}/respond:
+    post:
+      summary: Cook responds (accept or decline) to a job offer within 25s window
+      tags: [Matching]
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [action]
+              properties:
+                action: { type: string, enum: [ACCEPT, DECLINE], example: "ACCEPT" }
+      responses:
+        '200':
+          description: Offer decision recorded
+
+  # ==========================================
+  # PAYMENTS & WALLET
+  # ==========================================
+  /payments/razorpay/create-order:
+    post:
+      summary: Create Razorpay payment order for booking or wallet top-up
+      tags: [Payments]
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [bookingId]
+              properties:
+                bookingId: { type: string }
+                idempotencyKey: { type: string, format: uuid }
+      responses:
+        '200':
+          description: Razorpay order generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RazorpayOrderResponse'
+
+  /payments/razorpay/webhook:
+    post:
+      summary: Razorpay webhook endpoint for asynchronous payment capture/refund
+      tags: [Payments]
+      responses:
+        '200':
+          description: Webhook processed
+
+  /wallet/balance:
+    get:
+      summary: Get current wallet balance
+      tags: [Wallet]
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Current user wallet balance
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean, example: true }
+                  data:
+                    type: object
+                    properties:
+                      balance: { type: number, example: 450.00 }
+                      currency: { type: string, example: "INR" }
+
+  # ==========================================
+  # SAFETY & RATINGS
+  # ==========================================
+  /ratings:
+    post:
+      summary: Submit rating, review tags, and tip for a completed booking
+      tags: [Ratings]
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubmitRatingDto'
+      responses:
+        '201':
+          description: Rating recorded
+
+  /sos/trigger:
+    post:
+      summary: Trigger emergency SOS alert to operations team & emergency contact
+      tags: [Safety]
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SosTriggerDto'
+      responses:
+        '201':
+          description: SOS alert broadcast to operations dispatch
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    SendOtpDto:
+      type: object
+      required: [phone]
+      properties:
+        phone:
+          type: string
+          example: "+919876543210"
+          pattern: '^(\+91)[6-9]\d{9}$'
+
+    SendOtpResponse:
+      type: object
+      properties:
+        success: { type: boolean, example: true }
+        data:
+          type: object
+          properties:
+            message: { type: string, example: "OTP sent successfully" }
+            expiresInSeconds: { type: integer, example: 300 }
+
+    VerifyOtpDto:
+      type: object
+      required: [phone, otp]
+      properties:
+        phone:
+          type: string
+          example: "+919876543210"
+        otp:
+          type: string
+          example: "123456"
+          minLength: 6
+          maxLength: 6
+        role:
+          type: string
+          enum: [CUSTOMER, COOK, ADMIN]
+          default: CUSTOMER
+
+    AuthSuccessResponse:
+      type: object
+      properties:
+        success: { type: boolean, example: true }
+        data:
+          type: object
+          properties:
+            accessToken: { type: string }
+            refreshToken: { type: string }
+            user:
+              $ref: '#/components/schemas/UserDto'
+
+    TokenResponse:
+      type: object
+      properties:
+        success: { type: boolean, example: true }
+        data:
+          type: object
+          properties:
+            accessToken: { type: string }
+            refreshToken: { type: string }
+
+    RefreshTokenDto:
+      type: object
+      required: [refreshToken]
+      properties:
+        refreshToken: { type: string }
+
+    UserDto:
+      type: object
+      properties:
+        id: { type: string }
+        phone: { type: string, example: "+919876543210" }
+        name: { type: string, example: "Priya Sharma" }
+        email: { type: string, example: "priya@example.com" }
+        role: { type: string, enum: [CUSTOMER, COOK, ADMIN, OPS] }
+
+    UpdateUserDto:
+      type: object
+      properties:
+        name: { type: string, example: "Priya Sharma" }
+        email: { type: string, example: "priya@example.com" }
+
+    UserProfileResponse:
+      type: object
+      properties:
+        success: { type: boolean, example: true }
+        data:
+          $ref: '#/components/schemas/UserDto'
+
+    AddressDto:
+      type: object
+      properties:
+        id: { type: string }
+        label: { type: string, example: "Home" }
+        fullAddress: { type: string, example: "Flat 402, Green Glen Layout, Bellandur" }
+        landmark: { type: string, example: "Opposite Central Mall" }
+        pincode: { type: string, example: "560103" }
+        location:
+          $ref: '#/components/schemas/GeoPoint'
+        isDefault: { type: boolean, example: true }
+
+    CreateAddressDto:
+      type: object
+      required: [label, fullAddress, pincode, longitude, latitude]
+      properties:
+        label: { type: string, example: "Home" }
+        fullAddress: { type: string, example: "Flat 402, Green Glen Layout, Bellandur" }
+        landmark: { type: string, example: "Opposite Central Mall" }
+        pincode: { type: string, example: "560103" }
+        longitude: { type: number, example: 77.6744 }
+        latitude: { type: number, example: 12.9299 }
+        isDefault: { type: boolean, default: false }
+
+    AddressResponse:
+      type: object
+      properties:
+        success: { type: boolean, example: true }
+        data:
+          $ref: '#/components/schemas/AddressDto'
+
+    GeoPoint:
+      type: object
+      properties:
+        type: { type: string, example: "Point" }
+        coordinates:
+          type: array
+          items: { type: number }
+          example: [77.6744, 12.9299]
+
+    CookOnboardDto:
+      type: object
+      required: [cuisines, languages]
+      properties:
+        cuisines:
+          type: array
+          items: { type: string }
+          example: ["SOUTH_INDIAN", "KARNATAKA_SPECIAL"]
+        languages:
+          type: array
+          items: { type: string }
+          example: ["Kannada", "Hindi", "English"]
+        specialtyDishes:
+          type: array
+          items: { type: string }
+          example: ["Ragi Mudde", "Bisi Bele Bath"]
+        bankUpiId:
+          type: string
+          example: "cooksita@oksbi"
+
+    CookProfileResponse:
+      type: object
+      properties:
+        success: { type: boolean, example: true }
+        data:
+          type: object
+          properties:
+            id: { type: string }
+            verificationStatus: { type: string, example: "UNDER_REVIEW" }
+            isOnline: { type: boolean, example: false }
+            ratingAverage: { type: number, example: 4.95 }
+
+    UploadDocumentDto:
+      type: object
+      required: [documentType, fileUrl]
+      properties:
+        documentType:
+          type: string
+          enum: [AADHAAR, PAN, POLICE_VERIFICATION, PROFILE_PHOTO]
+        documentNumber:
+          type: string
+          example: "XXXX-XXXX-1234"
+        fileUrl:
+          type: string
+          format: uri
+
+    DocumentUploadResponse:
+      type: object
+      properties:
+        success: { type: boolean, example: true }
+        data:
+          type: object
+          properties:
+            documentId: { type: string }
+            status: { type: string, example: "PENDING" }
+
+    LocationUpdateDto:
+      type: object
+      required: [longitude, latitude]
+      properties:
+        longitude: { type: number, example: 77.6245 }
+        latitude: { type: number, example: 12.9352 }
+
+    CalculateFareDto:
+      type: object
+      required: [serviceType, personCount, longitude, latitude]
+      properties:
+        serviceType:
+          type: string
+          enum: [BREAKFAST, LUNCH, DINNER, FULL_DAY]
+        personCount:
+          type: integer
+          minimum: 1
+          maximum: 10
+          example: 2
+        longitude: { type: number, example: 77.6245 }
+        latitude: { type: number, example: 12.9352 }
+        couponCode: { type: string, example: "NAMMACOOKII" }
+
+    FareBreakdownResponse:
+      type: object
+      properties:
+        success: { type: boolean, example: true }
+        data:
+          $ref: '#/components/schemas/PricingBreakdown'
+
+    PricingBreakdown:
+      type: object
+      properties:
+        basePrice: { type: number, example: 299 }
+        perPersonAddOn: { type: number, example: 0 }
+        personCount: { type: integer, example: 2 }
+        peakMultiplier: { type: number, example: 1.0 }
+        surgePrice: { type: number, example: 0 }
+        platformFee: { type: number, example: 25 }
+        gstAmount: { type: number, example: 16.20 }
+        discountAmount: { type: number, example: 50 }
+        couponCode: { type: string, example: "NAMMACOOKII" }
+        totalCustomerPayable: { type: number, example: 290.20 }
+        cookPayoutAmount: { type: number, example: 240.00 }
+
+    CreateBookingDto:
+      type: object
+      required: [addressId, serviceType, cuisinesSelected, personCount, scheduledStartTime, paymentMethod]
+      properties:
+        addressId: { type: string }
+        serviceType:
+          type: string
+          enum: [BREAKFAST, LUNCH, DINNER, FULL_DAY]
+        cuisinesSelected:
+          type: array
+          items: { type: string }
+          example: ["SOUTH_INDIAN"]
+        personCount: { type: integer, example: 2 }
+        dietaryNotes: { type: string, example: "Less oil, mild spicy" }
+        scheduledStartTime: { type: string, format: date-time }
+        paymentMethod:
+          type: string
+          enum: [UPI, CARD, WALLET, CASH]
+        couponCode: { type: string }
+
+    BookingResponse:
+      type: object
+      properties:
+        success: { type: boolean, example: true }
+        data:
+          $ref: '#/components/schemas/BookingDetailDto'
+
+    BookingDetailDto:
+      type: object
+      properties:
+        id: { type: string }
+        bookingNumber: { type: string, example: "CK-202611-8492" }
+        status:
+          type: string
+          enum: [CREATED, PAYMENT_PENDING, SEARCHING, ASSIGNED, EN_ROUTE, ARRIVED, IN_PROGRESS, COMPLETED, CANCELLED, NO_SHOW, REFUNDED]
+        serviceType: { type: string, example: "LUNCH" }
+        scheduledStartTime: { type: string, format: date-time }
+        startOtp: { type: string, description: "Customer-facing 4-digit start OTP", example: "4921" }
+        pricing:
+          $ref: '#/components/schemas/PricingBreakdown'
+        cook:
+          type: object
+          properties:
+            name: { type: string, example: "Sita Lakshmi" }
+            rating: { type: number, example: 4.92 }
+            phone: { type: string, example: "+91-80-XXXX-1234 (Masked)" }
+
+    BookingsListResponse:
+      type: object
+      properties:
+        success: { type: boolean, example: true }
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/BookingDetailDto'
+
+    JobOfferDto:
+      type: object
+      properties:
+        id: { type: string }
+        bookingId: { type: string }
+        distanceKm: { type: number, example: 2.1 }
+        estimatedEarnings: { type: number, example: 350 }
+        expiresAt: { type: string, format: date-time }
+        serviceType: { type: string, example: "LUNCH" }
+        personCount: { type: integer, example: 3 }
+
+    RazorpayOrderResponse:
+      type: object
+      properties:
+        success: { type: boolean, example: true }
+        data:
+          type: object
+          properties:
+            orderId: { type: string, example: "order_KzX328019Xy" }
+            amount: { type: integer, example: 29020 }
+            currency: { type: string, example: "INR" }
+            keyId: { type: string, example: "rzp_test_placeholder" }
+
+    SubmitRatingDto:
+      type: object
+      required: [bookingId, rating]
+      properties:
+        bookingId: { type: string }
+        rating: { type: integer, minimum: 1, maximum: 5, example: 5 }
+        tags:
+          type: array
+          items: { type: string }
+          example: ["Punctual", "Delicious", "Cleaned Kitchen"]
+        comment: { type: string, example: "Sita made the best soft dosas and sambar!" }
+        tipAmount: { type: number, example: 50 }
+
+    SosTriggerDto:
+      type: object
+      required: [bookingId, longitude, latitude]
+      properties:
+        bookingId: { type: string }
+        longitude: { type: number, example: 77.6245 }
+        latitude: { type: number, example: 12.9352 }
+
+    ServicesListResponse:
+      type: object
+      properties:
+        success: { type: boolean, example: true }
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id: { type: string }
+              code: { type: string, example: "BREAKFAST" }
+              title: { type: string, example: "Morning Breakfast" }
+              description: { type: string, example: "Fresh hot dosas, idlis, poha, upma with chutney and filter coffee" }
+              basePrice: { type: number, example: 249 }
+              estimatedDurationMinutes: { type: integer, example: 60 }
+
+    ApiError:
+      type: object
+      properties:
+        success: { type: boolean, example: false }
+        statusCode: { type: integer, example: 400 }
+        message: { type: string, example: "Validation failed" }
+        error: { type: string, example: "Bad Request" }
+        details: { type: object }
+        timestamp: { type: string, format: date-time }
+        path: { type: string, example: "/api/v1/bookings" }
+        correlationId: { type: string, example: "b2c9540b-71bc-4e08-9df5-6188e63a1102" }
+
+  responses:
+    BadRequestError:
+      description: Validation error or invalid request payload
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+    UnauthorizedError:
+      description: Missing, invalid, or expired JWT token
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+

@@ -1,0 +1,41 @@
+name: cookii_mobile
+description: "Cookii - Production-Grade On-Demand Home Cook Booking Platform for Bengaluru, India"
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+  flutter: ">=3.19.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.19.0
+
+  # State Management & Architecture
+  flutter_riverpod: ^2.5.1
+  go_router: ^14.0.0
+
+  # Networking & Caching
+  dio: ^5.4.3
+  pretty_dio_logger: ^1.3.1
+
+  # Design, Icons, Haptics & Animations
+  lucide_icons: ^0.257.0
+  flutter_animate: ^4.5.0
+  shimmer: ^3.0.0
+
+  # Device & Storage
+  shared_preferences: ^2.2.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+  generate: true
+

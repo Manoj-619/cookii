@@ -1,0 +1,18 @@
+{
+  "@@locale": "hi",
+  "appName": "कूकी",
+  "tagline": "सत्यापित बेंगलुरु रसोइयों द्वारा ताजा घर का बना खाना",
+  "bookNowCta": "अभी रसोइया बुक करें",
+  "scheduleCta": "बाद के लिए बुक करें",
+  "serviceBreakfast": "सुबह का नाश्ता",
+  "serviceLunch": "दोपहर का भोजन",
+  "serviceDinner": "रात का खाना",
+  "serviceFullDay": "पूरे दिन का रसोइया",
+  "verifiedCook": "सत्यापित कुक पार्टनर",
+  "startOtpPrompt": "दरवाजे पर अपने रसोइये को यह 4-अंकीय ओटीपी बताएं",
+  "emergencySos": "आपातकालीन एसओएस",
+  "goOnline": "बुकिंग प्राप्त करने के लिए ऑनलाइन जाएं",
+  "goOffline": "ऑफलाइन जाएं",
+  "todayEarnings": "आज की कमाई"
+}
+
