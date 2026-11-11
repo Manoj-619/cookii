@@ -6,8 +6,9 @@
   "scripts": {
     "dev:backend": "pnpm --filter @cookii/backend run start:dev",
     "dev:admin": "pnpm --filter @cookii/admin run dev",
-    "dev:mobile": "npm --prefix legacy/expo-mvp start",
-    "dev:mobile:web": "npm --prefix legacy/expo-mvp run web",
+    "dev:mobile": "flutter run --directory apps/mobile",
+    "dev:mobile:android": "flutter run --directory apps/mobile -d android",
+    "dev:mobile:web": "flutter run --directory apps/mobile -d chrome",
     "build:backend": "pnpm --filter @cookii/backend run build",
     "build:admin": "pnpm --filter @cookii/admin run build",
     "test:backend": "pnpm --filter @cookii/backend run test",
