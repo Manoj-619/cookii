@@ -1,7 +1,7 @@
 import { Controller, Post, Get, Body, Headers } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { PaymentsService } from './payments.service';
-import { CreateRazorpayOrderDto, WalletTopupDto } from './dto/payments.dto';
+import { CreateRazorpayOrderDto, VerifyPaymentDto, WalletTopupDto } from './dto/payments.dto';
 
 @ApiTags('Payments & Wallet')
 @Controller()
@@ -13,6 +13,13 @@ export class PaymentsController {
   @ApiOperation({ summary: 'Create Razorpay payment order for booking' })
   async createOrder(@Headers('user-id') userId: string, @Body() dto: CreateRazorpayOrderDto) {
     return this.paymentsService.createRazorpayOrder(userId, dto);
+  }
+
+  @Post('payments/razorpay/verify')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Verify Razorpay payment signature' })
+  async verifyPayment(@Headers('user-id') userId: string, @Body() dto: VerifyPaymentDto) {
+    return this.paymentsService.verifyPayment(userId, dto);
   }
 
   @Post('payments/razorpay/webhook')

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 import '../theme/cookii_theme.dart';
 import '../models/models.dart';
 import '../state/cookii_state.dart';
 import '../widgets/interactive_scale.dart';
+import '../services/razorpay_service.dart';
 
 class BookingScreen extends StatefulWidget {
   final bool isInstant;
@@ -27,6 +29,7 @@ class _BookingScreenState extends State<BookingScreen> {
   late String _selectedServiceId;
   late String _selectedCookId;
   bool _isSubmitting = false;
+  late final RazorpayService _razorpayService;
 
   final List<String> _slots = [
     '7:30 AM',
@@ -44,6 +47,13 @@ class _BookingScreenState extends State<BookingScreen> {
     _selectedTimeSlot = widget.isInstant ? 'Within 45 mins' : _slots[0];
     _selectedServiceId = widget.initialService?.id ?? 'srv_breakfast';
     _selectedCookId = widget.initialCookId ?? 'cook_101';
+    _razorpayService = RazorpayService();
+  }
+
+  @override
+  void dispose() {
+    _razorpayService.dispose();
+    super.dispose();
   }
 
   @override
@@ -458,6 +468,29 @@ class _BookingScreenState extends State<BookingScreen> {
                       ),
                     ],
                   ),
+                  const SizedBox(height: 12),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF1F5F9),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(LucideIcons.shieldCheck, size: 14, color: CookiiColors.primaryDark),
+                        SizedBox(width: 6),
+                        Text(
+                          'Secured with Razorpay Sandbox • UPI & Cards',
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w700,
+                            color: CookiiColors.primaryDark,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -472,48 +505,112 @@ class _BookingScreenState extends State<BookingScreen> {
                       final messenger = ScaffoldMessenger.of(context);
                       final navigator = Navigator.of(context);
                       setState(() => _isSubmitting = true);
-                      await Future.delayed(const Duration(milliseconds: 650));
 
-                      final newBooking = Booking(
-                        id: 'BK-${DateTime.now().millisecondsSinceEpoch % 100000}',
-                        cookName: cook.name,
-                        cookId: cook.id,
-                        date: _selectedDate,
-                        startTime: _selectedTimeSlot,
-                        durationMinutes: service.estimatedMinutes,
-                        amountPaid: total,
-                        savings: passDiscount,
-                        status: 'upcoming',
-                        mealTypes: [service.title],
-                        addressLine: state.currentAddress.line,
-                        paymentRef: 'UPI_SIM_${DateTime.now().millisecondsSinceEpoch % 10000}',
-                      );
-                      state.addBooking(newBooking);
+                      final bookingId = 'BK-${DateTime.now().millisecondsSinceEpoch % 100000}';
 
-                      messenger.showSnackBar(
-                        SnackBar(
-                          backgroundColor: CookiiColors.primaryDark,
-                          behavior: SnackBarBehavior.floating,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          content: Row(
-                            children: [
-                              const Icon(
-                                LucideIcons.badgeCheck,
-                                color: Colors.white,
-                                size: 20,
+                      try {
+                        // 1. Create Razorpay order on backend
+                        final order = await RazorpayService.createOrder(
+                          bookingId: bookingId,
+                          amount: total.toDouble(),
+                        );
+
+                        if (!context.mounted) return;
+
+                        // 2. Open Razorpay checkout / Sandbox sheet
+                        _razorpayService.openCheckout(
+                          context: context,
+                          order: order,
+                          description: 'Cookii: ${service.title} with ${cook.name}',
+                          customerPhone: '+919876543210',
+                          customerEmail: 'customer@cookii.in',
+                          onSuccess: (paymentRes) async {
+                            // 3. Verify cryptographic HMAC signature
+                            await RazorpayService.verifyPayment(
+                              bookingId: bookingId,
+                              orderId: paymentRes.orderId ?? order.orderId,
+                              paymentId: paymentRes.paymentId ?? '',
+                              signature: paymentRes.signature ?? '',
+                            );
+
+                            final newBooking = Booking(
+                              id: bookingId,
+                              cookName: cook.name,
+                              cookId: cook.id,
+                              date: _selectedDate,
+                              startTime: _selectedTimeSlot,
+                              durationMinutes: service.estimatedMinutes,
+                              amountPaid: total,
+                              savings: passDiscount,
+                              status: 'upcoming',
+                              mealTypes: [service.title],
+                              addressLine: state.currentAddress.line,
+                              paymentRef: paymentRes.paymentId ?? 'pay_rzp_${DateTime.now().millisecondsSinceEpoch}',
+                            );
+
+                            state.addBooking(newBooking);
+
+                            messenger.showSnackBar(
+                              SnackBar(
+                                backgroundColor: CookiiColors.primaryDark,
+                                behavior: SnackBarBehavior.floating,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                content: Row(
+                                  children: [
+                                    const Icon(
+                                      LucideIcons.badgeCheck,
+                                      color: Colors.white,
+                                      size: 20,
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Expanded(
+                                      child: Text(
+                                        'Payment Verified (₹$total) • ${cook.name} Confirmed!',
+                                        style: const TextStyle(fontWeight: FontWeight.w600),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              const SizedBox(width: 10),
-                              Text(
-                                'Booking confirmed with ${cook.name}!',
-                                style: const TextStyle(fontWeight: FontWeight.w600),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                      navigator.pop();
+                            );
+
+                            if (mounted) {
+                              navigator.pop();
+                            }
+                          },
+                          onError: (errRes) {
+                            if (!mounted) return;
+                            setState(() => _isSubmitting = false);
+                            if (errRes.code != Razorpay.PAYMENT_CANCELLED) {
+                              messenger.showSnackBar(
+                                SnackBar(
+                                  backgroundColor: const Color(0xFFDC2626),
+                                  behavior: SnackBarBehavior.floating,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  content: Text(
+                                    'Payment Failed: ${errRes.message ?? "Transaction declined"}',
+                                    style: const TextStyle(fontWeight: FontWeight.w600),
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                        );
+                      } catch (e) {
+                        if (mounted) {
+                          setState(() => _isSubmitting = false);
+                          messenger.showSnackBar(
+                            SnackBar(
+                              backgroundColor: const Color(0xFFDC2626),
+                              content: Text('Payment launch error: $e'),
+                            ),
+                          );
+                        }
+                      }
                     },
               child: Container(
                 width: double.infinity,
