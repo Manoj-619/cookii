@@ -10,12 +10,41 @@ class CookiiState extends ChangeNotifier {
   int _walletBalance = 1450;
   bool _isLoadingServices = false;
 
+  UserProfile? _currentUser = UserProfile.defaultCustomer;
+  bool _isGuest = false;
+
   List<KitchenAddress> get addresses => _addresses;
   List<Booking> get bookings => _bookings;
   List<Service> get services => _services;
   Set<String> get favoriteCookIds => _favoriteCookIds;
   int get walletBalance => _walletBalance;
   bool get isLoadingServices => _isLoadingServices;
+  UserProfile? get currentUser => _currentUser;
+  bool get isAuthenticated => _currentUser != null;
+  bool get isGuest => _isGuest;
+
+  void setUser(UserProfile user) {
+    _currentUser = user;
+    _isGuest = false;
+    notifyListeners();
+  }
+
+  void loginAsGuest() {
+    _currentUser = const UserProfile(
+      id: 'guest_user',
+      name: 'Guest Diner',
+      role: 'customer',
+      provider: 'guest',
+    );
+    _isGuest = true;
+    notifyListeners();
+  }
+
+  void logout() {
+    _currentUser = null;
+    _isGuest = false;
+    notifyListeners();
+  }
 
   KitchenAddress get currentAddress =>
       _addresses.firstWhere((a) => a.isSelected, orElse: () => _addresses.first);

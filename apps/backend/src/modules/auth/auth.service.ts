@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { SendOtpDto, VerifyOtpDto, RefreshTokenDto } from './dto/auth.dto';
+import { SendOtpDto, VerifyOtpDto, RefreshTokenDto, GoogleAuthDto } from './dto/auth.dto';
 import { UserRole } from '@cookii/shared-types';
 
 @Injectable()
@@ -35,14 +35,41 @@ export class AuthService {
     return {
       success: true,
       data: {
-        accessToken: `mock_jwt_access_token_${Date.now()}`,
-        refreshToken: `mock_jwt_refresh_token_${Date.now()}`,
+        accessToken: `jwt_phone_access_${Date.now()}`,
+        refreshToken: `jwt_phone_refresh_${Date.now()}`,
         user: {
-          id: 'user_mock_101',
+          id: 'user_phone_101',
           phone: dto.phone,
           name: role === UserRole.COOK ? 'Sita Lakshmi' : 'Arjun Rao',
           role,
+          provider: 'phone',
           isPhoneVerified: true,
+        },
+      },
+    };
+  }
+
+  async googleAuth(dto: GoogleAuthDto) {
+    this.logger.log(`Google authentication for email: ${dto.email || 'token_auth'}`);
+
+    const email = dto.email || 'customer@cookii.in';
+    const name = dto.name || 'Arjun Rao';
+    const role = dto.role || UserRole.CUSTOMER;
+
+    return {
+      success: true,
+      data: {
+        accessToken: `jwt_google_access_${Date.now()}`,
+        refreshToken: `jwt_google_refresh_${Date.now()}`,
+        user: {
+          id: 'user_google_102',
+          email,
+          name,
+          phone: '+919876543210',
+          photoUrl: dto.photoUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150',
+          role,
+          provider: 'google',
+          isEmailVerified: true,
         },
       },
     };
@@ -61,4 +88,5 @@ export class AuthService {
     };
   }
 }
+
 

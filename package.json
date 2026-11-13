@@ -5,6 +5,9 @@
   "description": "Production-grade, on-demand home cook booking platform for Bengaluru, India",
   "scripts": {
     "dev:backend": "pnpm --filter @cookii/backend run start:dev",
+    "dev:backend:qa": "node -e \"process.env.NODE_ENV='qa'\" && pnpm --filter @cookii/backend run start:dev",
+    "dev:backend:prod": "node -e \"process.env.NODE_ENV='production'\" && pnpm --filter @cookii/backend run start:dev",
+    "test:db": "node apps/backend/scripts/test-db-connection.js",
     "dev:admin": "pnpm --filter @cookii/admin run dev",
     "dev:mobile": "flutter run --directory apps/mobile",
     "dev:mobile:android": "flutter run --directory apps/mobile -d android",

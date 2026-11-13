@@ -1,7 +1,7 @@
 import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
-import { SendOtpDto, VerifyOtpDto, RefreshTokenDto } from './dto/auth.dto';
+import { SendOtpDto, VerifyOtpDto, RefreshTokenDto, GoogleAuthDto } from './dto/auth.dto';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -24,6 +24,14 @@ export class AuthController {
     return this.authService.verifyOtp(dto);
   }
 
+  @Post('google')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Sign in with Google OAuth / ID token' })
+  @ApiResponse({ status: 200, description: 'Authenticated successfully with Google' })
+  async googleAuth(@Body() dto: GoogleAuthDto) {
+    return this.authService.googleAuth(dto);
+  }
+
   @Post('token/refresh')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Rotate refresh token' })
@@ -32,4 +40,5 @@ export class AuthController {
     return this.authService.refreshToken(dto);
   }
 }
+
 

@@ -7,6 +7,7 @@ import 'state/cookii_state.dart';
 import 'screens/home_screen.dart';
 import 'screens/bookings_screen.dart';
 import 'screens/profile_screen.dart';
+import 'screens/login_screen.dart';
 import 'widgets/interactive_scale.dart';
 
 void main() {
@@ -36,11 +37,18 @@ class _CookiiAppState extends State<CookiiApp> {
   Widget build(BuildContext context) {
     return CookiiScope(
       state: _state,
-      child: MaterialApp(
-        title: 'Cookii — Home Cook Booking',
-        debugShowCheckedModeBanner: false,
-        theme: CookiiTheme.lightTheme,
-        home: const MainNavigationScreen(),
+      child: AnimatedBuilder(
+        animation: _state,
+        builder: (context, _) {
+          return MaterialApp(
+            title: 'Cookii — Home Cook Booking',
+            debugShowCheckedModeBanner: false,
+            theme: CookiiTheme.lightTheme,
+            home: (_state.currentUser == null && !_state.isGuest)
+                ? const LoginScreen()
+                : const MainNavigationScreen(),
+          );
+        },
       ),
     );
   }

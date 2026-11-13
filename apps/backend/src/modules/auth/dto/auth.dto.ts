@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsPhoneNumber, IsString, Length, IsEnum, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsPhoneNumber, IsString, Length, IsEnum, IsOptional, IsEmail } from 'class-validator';
 import { UserRole } from '@cookii/shared-types';
 
 export class SendOtpDto {
@@ -19,6 +19,33 @@ export class VerifyOtpDto {
   @IsNotEmpty()
   @Length(6, 6)
   otp!: string;
+
+  @ApiProperty({ enum: UserRole, default: UserRole.CUSTOMER, required: false })
+  @IsOptional()
+  @IsEnum(UserRole)
+  role?: UserRole;
+}
+
+export class GoogleAuthDto {
+  @ApiProperty({ example: 'google_id_token_xyz', description: 'Google ID token from mobile or web client' })
+  @IsNotEmpty()
+  @IsString()
+  idToken!: string;
+
+  @ApiProperty({ example: 'arjun.rao@gmail.com', required: false })
+  @IsOptional()
+  @IsEmail()
+  email?: string;
+
+  @ApiProperty({ example: 'Arjun Rao', required: false })
+  @IsOptional()
+  @IsString()
+  name?: string;
+
+  @ApiProperty({ example: 'https://lh3.googleusercontent.com/a/...', required: false })
+  @IsOptional()
+  @IsString()
+  photoUrl?: string;
 
   @ApiProperty({ enum: UserRole, default: UserRole.CUSTOMER, required: false })
   @IsOptional()

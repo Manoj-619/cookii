@@ -300,3 +300,49 @@ final List<Booking> defaultBookings = [
     paymentRef: 'WALLET_SIM_7718',
   ),
 ];
+
+class UserProfile {
+  final String id;
+  final String name;
+  final String? email;
+  final String? phone;
+  final String? photoUrl;
+  final String role;
+  final String provider; // 'phone' | 'google' | 'guest'
+  final String? token;
+
+  const UserProfile({
+    required this.id,
+    required this.name,
+    this.email,
+    this.phone,
+    this.photoUrl,
+    this.role = 'customer',
+    this.provider = 'phone',
+    this.token,
+  });
+
+  factory UserProfile.fromJson(Map<String, dynamic> json, {String? token}) {
+    return UserProfile(
+      id: json['id'] ?? 'user_${DateTime.now().millisecondsSinceEpoch % 10000}',
+      name: json['name'] ?? 'Cookii Foodie',
+      email: json['email'],
+      phone: json['phone'],
+      photoUrl: json['photoUrl'],
+      role: json['role'] ?? 'customer',
+      provider: json['provider'] ?? 'phone',
+      token: token,
+    );
+  }
+
+  static const UserProfile defaultCustomer = UserProfile(
+    id: 'cust_arjun_101',
+    name: 'Arjun Rao',
+    phone: '+91 98765 43210',
+    email: 'arjun.rao@gmail.com',
+    role: 'customer',
+    provider: 'phone',
+    photoUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200',
+  );
+}
+
