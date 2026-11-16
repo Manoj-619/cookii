@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import '../models/models.dart';
+import 'token_storage_service.dart';
 
 class ApiService {
   // Uses reverse adb port or localhost when on Web/Desktop, or 10.0.2.2 when on Android emulator
@@ -14,10 +15,53 @@ class ApiService {
     return 'http://localhost:4000/api/v1';
   }
 
+  /// Helper to attach cryptographic JWT Bearer token to all outgoing API requests
+  static Future<Map<String, String>> getAuthHeaders() async {
+    final token = await TokenStorageService.getAccessToken();
+    final headers = <String, String>{
+      'Content-Type': 'application/json',
+    };
+    if (token != null && token.isNotEmpty) {
+      headers['Authorization'] = 'Bearer $token';
+    }
+    return headers;
+  }
+
+  /// Transparently rotate access token using refresh token
+  static Future<String?> refreshAccessToken() async {
+    final refreshToken = await TokenStorageService.getRefreshToken();
+    if (refreshToken == null) return null;
+
+    try {
+      final uri = Uri.parse('$baseUrl/auth/token/refresh');
+      final res = await http.post(
+        uri,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'refreshToken': refreshToken}),
+      ).timeout(const Duration(seconds: 4));
+
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        final body = jsonDecode(res.body);
+        if (body['success'] == true && body['data'] != null) {
+          final newAccessToken = body['data']['accessToken'] as String?;
+          if (newAccessToken != null) {
+            await TokenStorageService.updateAccessToken(newAccessToken);
+            debugPrint('✓ Successfully refreshed JWT access token');
+            return newAccessToken;
+          }
+        }
+      }
+    } catch (e) {
+      debugPrint('Token refresh error: $e');
+    }
+    return null;
+  }
+
   static Future<List<Service>> fetchServices() async {
     try {
       final uri = Uri.parse('$baseUrl/services');
-      final res = await http.get(uri).timeout(const Duration(seconds: 4));
+      final headers = await getAuthHeaders();
+      final res = await http.get(uri, headers: headers).timeout(const Duration(seconds: 4));
       if (res.statusCode == 200) {
         final Map<String, dynamic> body = jsonDecode(res.body);
         if (body['success'] == true && body['data'] is List) {
@@ -50,7 +94,6 @@ class ApiService {
     } catch (e) {
       debugPrint('sendOtp network note: $e');
     }
-    // Return true for local mock fallback
     return true;
   }
 
@@ -74,10 +117,23 @@ class ApiService {
         final body = jsonDecode(res.body);
         if (body['success'] == true && body['data'] != null) {
           final data = body['data'];
-          return UserProfile.fromJson(
+          final accessToken = data['accessToken'] as String?;
+          final refreshToken = data['refreshToken'] as String?;
+          final user = UserProfile.fromJson(
             data['user'] ?? {},
-            token: data['accessToken'],
+            token: accessToken,
+            refreshToken: refreshToken,
           );
+
+          if (accessToken != null && refreshToken != null) {
+            await TokenStorageService.saveSession(
+              accessToken: accessToken,
+              refreshToken: refreshToken,
+              user: user,
+            );
+          }
+
+          return user;
         }
       }
     } catch (e) {
@@ -86,7 +142,7 @@ class ApiService {
 
     // Dev/Sandbox fallback
     if (otp == '123456' || otp.length == 6) {
-      return UserProfile(
+      final user = UserProfile(
         id: 'cust_${DateTime.now().millisecondsSinceEpoch % 10000}',
         name: 'Arjun Rao',
         phone: phone,
@@ -94,6 +150,12 @@ class ApiService {
         provider: 'phone',
         token: 'mock_jwt_token_local',
       );
+      await TokenStorageService.saveSession(
+        accessToken: 'mock_jwt_token_local',
+        refreshToken: 'mock_refresh_token_local',
+        user: user,
+      );
+      return user;
     }
     return null;
   }
@@ -125,10 +187,23 @@ class ApiService {
         final body = jsonDecode(res.body);
         if (body['success'] == true && body['data'] != null) {
           final data = body['data'];
-          return UserProfile.fromJson(
+          final accessToken = data['accessToken'] as String?;
+          final refreshToken = data['refreshToken'] as String?;
+          final user = UserProfile.fromJson(
             data['user'] ?? {},
-            token: data['accessToken'],
+            token: accessToken,
+            refreshToken: refreshToken,
           );
+
+          if (accessToken != null && refreshToken != null) {
+            await TokenStorageService.saveSession(
+              accessToken: accessToken,
+              refreshToken: refreshToken,
+              user: user,
+            );
+          }
+
+          return user;
         }
       }
     } catch (e) {
@@ -136,7 +211,7 @@ class ApiService {
     }
 
     // Dev/Sandbox fallback
-    return UserProfile(
+    final user = UserProfile(
       id: 'cust_google_${DateTime.now().millisecondsSinceEpoch % 10000}',
       name: name ?? 'Arjun Rao',
       email: email ?? 'customer@cookii.in',
@@ -146,6 +221,13 @@ class ApiService {
       provider: 'google',
       token: 'mock_google_jwt_token_local',
     );
+    await TokenStorageService.saveSession(
+      accessToken: 'mock_google_jwt_token_local',
+      refreshToken: 'mock_google_refresh_local',
+      user: user,
+    );
+    return user;
   }
 }
+
 

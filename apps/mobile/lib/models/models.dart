@@ -310,6 +310,7 @@ class UserProfile {
   final String role;
   final String provider; // 'phone' | 'google' | 'guest'
   final String? token;
+  final String? refreshToken;
 
   const UserProfile({
     required this.id,
@@ -320,9 +321,10 @@ class UserProfile {
     this.role = 'customer',
     this.provider = 'phone',
     this.token,
+    this.refreshToken,
   });
 
-  factory UserProfile.fromJson(Map<String, dynamic> json, {String? token}) {
+  factory UserProfile.fromJson(Map<String, dynamic> json, {String? token, String? refreshToken}) {
     return UserProfile(
       id: json['id'] ?? 'user_${DateTime.now().millisecondsSinceEpoch % 10000}',
       name: json['name'] ?? 'Cookii Foodie',
@@ -331,8 +333,23 @@ class UserProfile {
       photoUrl: json['photoUrl'],
       role: json['role'] ?? 'customer',
       provider: json['provider'] ?? 'phone',
-      token: token,
+      token: token ?? json['token'],
+      refreshToken: refreshToken ?? json['refreshToken'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'email': email,
+      'phone': phone,
+      'photoUrl': photoUrl,
+      'role': role,
+      'provider': provider,
+      'token': token,
+      'refreshToken': refreshToken,
+    };
   }
 
   static const UserProfile defaultCustomer = UserProfile(

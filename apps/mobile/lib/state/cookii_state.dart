@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/models.dart';
 import '../services/api_service.dart';
+import '../services/token_storage_service.dart';
 
 class CookiiState extends ChangeNotifier {
   List<KitchenAddress> _addresses = List.from(defaultAddresses);
@@ -10,7 +11,7 @@ class CookiiState extends ChangeNotifier {
   int _walletBalance = 1450;
   bool _isLoadingServices = false;
 
-  UserProfile? _currentUser = UserProfile.defaultCustomer;
+  UserProfile? _currentUser;
   bool _isGuest = false;
 
   List<KitchenAddress> get addresses => _addresses;
@@ -20,7 +21,7 @@ class CookiiState extends ChangeNotifier {
   int get walletBalance => _walletBalance;
   bool get isLoadingServices => _isLoadingServices;
   UserProfile? get currentUser => _currentUser;
-  bool get isAuthenticated => _currentUser != null;
+  bool get isAuthenticated => _currentUser != null && _currentUser!.provider != 'guest';
   bool get isGuest => _isGuest;
 
   void setUser(UserProfile user) {
@@ -40,7 +41,8 @@ class CookiiState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void logout() {
+  Future<void> logout() async {
+    await TokenStorageService.clearSession();
     _currentUser = null;
     _isGuest = false;
     notifyListeners();
@@ -50,7 +52,16 @@ class CookiiState extends ChangeNotifier {
       _addresses.firstWhere((a) => a.isSelected, orElse: () => _addresses.first);
 
   CookiiState() {
+    restoreSession();
     loadServices();
+  }
+
+  Future<void> restoreSession() async {
+    final cached = await TokenStorageService.getUserProfile();
+    if (cached != null) {
+      _currentUser = cached;
+      notifyListeners();
+    }
   }
 
   Future<void> loadServices() async {

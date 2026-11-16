@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../theme/cookii_theme.dart';
 import '../services/api_service.dart';
+import '../services/google_auth_service.dart';
 import '../state/cookii_state.dart';
 import '../widgets/interactive_scale.dart';
 
@@ -132,37 +133,43 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> _handleGoogleSignIn() async {
     setState(() => _isGoogleLoading = true);
-    await Future.delayed(const Duration(milliseconds: 650));
 
-    final user = await ApiService.googleAuth(
-      idToken: 'google_id_token_${DateTime.now().millisecondsSinceEpoch}',
-      name: 'Arjun Rao',
-      email: 'arjun.rao@gmail.com',
-      photoUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200',
-    );
+    try {
+      final user = await GoogleAuthService.signIn();
 
-    if (!mounted) return;
-    setState(() => _isGoogleLoading = false);
+      if (!mounted) return;
+      setState(() => _isGoogleLoading = false);
 
-    if (user != null) {
-      final state = CookiiScope.of(context);
-      state.setUser(user);
+      if (user != null) {
+        final state = CookiiScope.of(context);
+        state.setUser(user);
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: CookiiColors.primaryDark,
-          behavior: SnackBarBehavior.floating,
-          content: Row(
-            children: [
-              const Icon(LucideIcons.badgeCheck, color: Colors.white, size: 20),
-              const SizedBox(width: 10),
-              Text('Signed in with Google as ${user.name}'),
-            ],
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: CookiiColors.primaryDark,
+            behavior: SnackBarBehavior.floating,
+            content: Row(
+              children: [
+                const Icon(LucideIcons.badgeCheck, color: Colors.white, size: 20),
+                const SizedBox(width: 10),
+                Text('Signed in with Google as ${user.name}'),
+              ],
+            ),
           ),
-        ),
-      );
+        );
 
-      widget.onLoginSuccess?.call();
+        widget.onLoginSuccess?.call();
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() => _isGoogleLoading = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Google Sign-In failed: $e'),
+            backgroundColor: Colors.red.shade700,
+          ),
+        );
+      }
     }
   }
 
