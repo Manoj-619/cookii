@@ -12,6 +12,7 @@
     "dev:mobile": "flutter run --directory apps/mobile",
     "dev:mobile:android": "flutter run --directory apps/mobile -d android",
     "dev:mobile:web": "flutter run --directory apps/mobile -d chrome",
+    "dev:cook": "pnpm --filter cookii-cook run start",
     "build:backend": "pnpm --filter @cookii/backend run build",
     "build:admin": "pnpm --filter @cookii/admin run build",
     "test:backend": "pnpm --filter @cookii/backend run test",

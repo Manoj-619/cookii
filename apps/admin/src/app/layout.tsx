@@ -1,9 +1,17 @@
 import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 import './globals.css';
+import DashboardShell from '@/components/DashboardShell';
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
-  title: 'Cookii Operations — Bengaluru Command Center',
-  description: 'Operations dispatch, cook verification queue, and live tracking map for Cookii Bengaluru.',
+  title: 'Zapeat Ops — Admin Dashboard',
+  description: 'Operations dispatch, cook verification queue, live bookings, and fleet tracking for Zapeat Bengaluru.',
 };
 
 export default function RootLayout({
@@ -12,11 +20,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className="antialiased min-h-screen bg-[#FAF7F2] text-[#1E1B18]">
-        {children}
+    <html lang="en" className={inter.variable}>
+      <body className="antialiased min-h-screen bg-[#F6FAF7] text-gray-900 font-sans selection:bg-emerald-500 selection:text-white">
+        <DashboardShell>
+          {children}
+        </DashboardShell>
       </body>
     </html>
   );
 }
-

@@ -36,8 +36,32 @@ export class User {
   @Prop({ type: Number, default: 0 })
   walletBalance!: number;
 
-  @Prop({ type: String, enum: ['active', 'suspended', 'deleted'], default: 'active' })
-  status!: string;
+  @Prop({ type: String, select: false })
+  passwordHash?: string;
+
+  @Prop({ type: String, sparse: true })
+  fcmToken?: string;
+
+  @Prop({ type: String, sparse: true })
+  deviceToken?: string;
+
+  @Prop({ type: String, enum: ['DRAFT', 'SUBMITTED', 'UNDER_REVIEW', 'VERIFIED', 'REJECTED', 'SUSPENDED'], default: 'DRAFT' })
+  verificationStatus?: string;
+
+  @Prop({ type: [String], default: [] })
+  cuisines?: string[];
+
+  @Prop({ type: [String], default: [] })
+  languages?: string[];
+
+  @Prop({ type: Boolean, default: false })
+  isOnline?: boolean;
+
+  @Prop({ type: Number, default: 4.8 })
+  ratingAverage?: number;
+
+  @Prop({ type: Number, default: 0 })
+  totalCompletedJobs?: number;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

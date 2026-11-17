@@ -5,8 +5,11 @@ export type OtpDocument = OtpRecord & Document;
 
 @Schema({ timestamps: true, collection: 'otps' })
 export class OtpRecord {
-  @Prop({ type: String, required: true, index: true })
-  phone!: string;
+  @Prop({ type: String, sparse: true, index: true })
+  phone?: string;
+
+  @Prop({ type: String, sparse: true, index: true, lowercase: true, trim: true })
+  email?: string;
 
   @Prop({ type: String, required: true })
   otpCode!: string;
@@ -24,4 +27,5 @@ export class OtpRecord {
 
 export const OtpSchema = SchemaFactory.createForClass(OtpRecord);
 OtpSchema.index({ phone: 1, isConsumed: 1 });
+OtpSchema.index({ email: 1, isConsumed: 1 });
 

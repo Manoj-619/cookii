@@ -1,0 +1,187 @@
+import { ActiveJob, CompletedJob, CookProfile, EarningsTransaction, JobOffer, ScheduleSlot } from '../types';
+
+export const mockProfile: CookProfile = {
+  id: 'cook_sl_001',
+  name: 'Sita Lakshmi',
+  phone: '+91 98765 43210',
+  email: 'sita.lakshmi@cookii.in',
+  avatarInitials: 'SL',
+  rating: 4.9,
+  totalBookings: 184,
+  kycStatus: 'VERIFIED',
+  experienceYears: 7,
+  languages: ['Hindi', 'Kannada', 'Tamil', 'English'],
+  cuisines: ['South Indian', 'North Indian', 'Healthy Diet', 'Sattvic'],
+  bankAccount: {
+    accountHolder: 'Sita Lakshmi',
+    bankName: 'HDFC Bank',
+    accountNumberMasked: '•••• •••• 4892',
+    ifsc: 'HDFC0001234',
+    isVerified: true,
+  },
+};
+
+export const initialPendingOffers: JobOffer[] = [
+  {
+    id: 'offer-101',
+    customerName: 'Ananya Sharma',
+    customerArea: 'Indiranagar 100ft Rd',
+    fullAddress: 'Flat 402, Green Glen Apartments, 12th Main, Indiranagar, Bengaluru',
+    mealType: 'Lunch',
+    durationMinutes: 90,
+    earnings: 550,
+    requestedTime: '12:30 PM - 2:00 PM',
+    date: 'Today',
+    dishes: ['Paneer Butter Masala', 'Phulkas (6)', 'Jeera Rice', 'Cucumber Salad'],
+    expiresInSeconds: 25,
+    receivedAt: new Date().toISOString(),
+    status: 'pending',
+  },
+  {
+    id: 'offer-102',
+    customerName: 'Vikram Mehta',
+    customerArea: 'Koramangala 4th Block',
+    fullAddress: 'Villa 18, Palm Meadows, 80ft Road, Koramangala, Bengaluru',
+    mealType: 'Dinner',
+    durationMinutes: 75,
+    earnings: 480,
+    requestedTime: '7:30 PM - 8:45 PM',
+    date: 'Today',
+    dishes: ['Dal Tadka', 'Aloo Gobi', 'Chapati (4)', 'Steamed Basmati Rice'],
+    expiresInSeconds: 25,
+    receivedAt: new Date().toISOString(),
+    status: 'pending',
+  },
+];
+
+export const initialActiveJobs: ActiveJob[] = [
+  {
+    id: 'job-act-201',
+    customerName: 'Rahul & Priya Verma',
+    customerPhone: '+91 98450 11223',
+    customerArea: 'HSR Layout Sector 2',
+    fullAddress: 'House 54, 14th Main, Sector 2, HSR Layout, Bengaluru',
+    mealType: 'Breakfast',
+    durationMinutes: 60,
+    earnings: 450,
+    scheduledTime: '8:00 AM - 9:00 AM',
+    date: 'Today',
+    dishes: ['Masala Dosa (4)', 'Sambar', 'Coconut Chutney', 'Filter Coffee'],
+    status: 'cooking',
+    startedAt: new Date(Date.now() - 25 * 60 * 1000).toISOString(),
+  },
+];
+
+export const initialCompletedJobs: CompletedJob[] = [
+  {
+    id: 'job-comp-301',
+    customerName: 'Kavita Nair',
+    customerArea: 'Bellandur EcoSpace',
+    mealType: 'Dinner',
+    completedAt: 'Yesterday, 8:45 PM',
+    durationMinutes: 90,
+    earnings: 600,
+    rating: 5,
+    tip: 100,
+  },
+  {
+    id: 'job-comp-302',
+    customerName: 'Deepak Joshi',
+    customerArea: 'Sarjapur Road',
+    mealType: 'Lunch',
+    completedAt: 'Yesterday, 1:30 PM',
+    durationMinutes: 60,
+    earnings: 450,
+    rating: 5,
+  },
+  {
+    id: 'job-comp-303',
+    customerName: 'Sunita Rao',
+    customerArea: 'BTM 2nd Stage',
+    mealType: 'Breakfast',
+    completedAt: '2 days ago',
+    durationMinutes: 60,
+    earnings: 400,
+    rating: 4.8,
+  },
+];
+
+export const initialScheduleSlots: ScheduleSlot[] = [
+  {
+    id: 'slot-1',
+    timeSlot: '7:30 AM - 9:00 AM',
+    mealType: 'Breakfast',
+    area: 'HSR Layout Sector 2',
+    customerName: 'Rahul Verma',
+    status: 'booked',
+    bookingId: 'job-act-201',
+  },
+  {
+    id: 'slot-2',
+    timeSlot: '12:30 PM - 2:00 PM',
+    mealType: 'Lunch',
+    area: 'Indiranagar 100ft Rd',
+    customerName: 'Pending Confirmation',
+    status: 'available',
+  },
+  {
+    id: 'slot-3',
+    timeSlot: '4:30 PM - 5:30 PM',
+    mealType: 'Breakfast', // Snacks
+    status: 'available',
+  },
+  {
+    id: 'slot-4',
+    timeSlot: '7:30 PM - 9:00 PM',
+    mealType: 'Dinner',
+    area: 'Koramangala 4th Block',
+    status: 'available',
+  },
+];
+
+export const initialTransactions: EarningsTransaction[] = [
+  {
+    id: 'txn-901',
+    title: 'Breakfast Booking - HSR Layout',
+    amount: 450,
+    type: 'credit',
+    date: 'Today, 9:05 AM',
+    bookingRef: 'BK-89021',
+    status: 'Completed',
+  },
+  {
+    id: 'txn-902',
+    title: 'Dinner + ₹100 Tip - Kavita Nair',
+    amount: 700,
+    type: 'credit',
+    date: 'Yesterday, 9:15 PM',
+    bookingRef: 'BK-88934',
+    status: 'Completed',
+  },
+  {
+    id: 'txn-903',
+    title: 'Weekly Payout to HDFC Bank (•••• 4892)',
+    amount: -6200,
+    type: 'payout',
+    date: 'Monday, 10:00 AM',
+    status: 'Completed',
+  },
+  {
+    id: 'txn-904',
+    title: 'Lunch Booking - Deepak Joshi',
+    amount: 450,
+    type: 'credit',
+    date: 'Nov 14, 2:10 PM',
+    bookingRef: 'BK-88612',
+    status: 'Completed',
+  },
+  {
+    id: 'txn-905',
+    title: 'Breakfast Booking - Sunita Rao',
+    amount: 400,
+    type: 'credit',
+    date: 'Nov 13, 9:00 AM',
+    bookingRef: 'BK-88401',
+    status: 'Completed',
+  },
+];

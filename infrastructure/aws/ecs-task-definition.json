@@ -1,0 +1,170 @@
+{
+  "family": "cookii-backend",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "512",
+  "memory": "1024",
+  "executionRoleArn": "arn:aws:iam::<AWS_ACCOUNT_ID>:role/cookii-ecs-execution-role",
+  "taskRoleArn": "arn:aws:iam::<AWS_ACCOUNT_ID>:role/cookii-ecs-task-role",
+  "containerDefinitions": [
+    {
+      "name": "cookii-backend",
+      "image": "<AWS_ACCOUNT_ID>.dkr.ecr.ap-south-1.amazonaws.com/cookii-backend:latest",
+      "essential": true,
+      "portMappings": [
+        {
+          "name": "backend-4000",
+          "containerPort": 4000,
+          "hostPort": 4000,
+          "protocol": "tcp",
+          "appProtocol": "http"
+        }
+      ],
+      "environment": [
+        {
+          "name": "NODE_ENV",
+          "value": "production"
+        },
+        {
+          "name": "PORT",
+          "value": "4000"
+        },
+        {
+          "name": "API_PREFIX",
+          "value": "api/v1"
+        },
+        {
+          "name": "AWS_REGION",
+          "value": "ap-south-1"
+        },
+        {
+          "name": "STORAGE_PROVIDER",
+          "value": "s3"
+        },
+        {
+          "name": "AWS_S3_REGION",
+          "value": "ap-south-1"
+        },
+        {
+          "name": "EMAIL_PROVIDER",
+          "value": "ses"
+        },
+        {
+          "name": "AWS_SES_REGION",
+          "value": "ap-south-1"
+        },
+        {
+          "name": "AWS_SES_FROM_EMAIL",
+          "value": "noreply@cookii.in"
+        },
+        {
+          "name": "LOG_LEVEL",
+          "value": "info"
+        },
+        {
+          "name": "CORS_ORIGIN",
+          "value": "https://admin.cookii.in,https://cookii.in"
+        }
+      ],
+      "secrets": [
+        {
+          "name": "MONGODB_URI",
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/MONGODB_URI"
+        },
+        {
+          "name": "REDIS_HOST",
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/REDIS_HOST"
+        },
+        {
+          "name": "REDIS_PORT",
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/REDIS_PORT"
+        },
+        {
+          "name": "REDIS_PASSWORD",
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/REDIS_PASSWORD"
+        },
+        {
+          "name": "REDIS_TLS",
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/REDIS_TLS"
+        },
+        {
+          "name": "JWT_ACCESS_SECRET",
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/JWT_ACCESS_SECRET"
+        },
+        {
+          "name": "JWT_REFRESH_SECRET",
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/JWT_REFRESH_SECRET"
+        },
+        {
+          "name": "ADMIN_JWT_SECRET",
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/ADMIN_JWT_SECRET"
+        },
+        {
+          "name": "OTP_PROVIDER",
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/OTP_PROVIDER"
+        },
+        {
+          "name": "MSG91_AUTH_KEY",
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/MSG91_AUTH_KEY"
+        },
+        {
+          "name": "MSG91_TEMPLATE_ID",
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/MSG91_TEMPLATE_ID"
+        },
+        {
+          "name": "MSG91_SENDER",
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/MSG91_SENDER"
+        },
+        {
+          "name": "RAZORPAY_KEY_ID",
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/RAZORPAY_KEY_ID"
+        },
+        {
+          "name": "RAZORPAY_KEY_SECRET",
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/RAZORPAY_KEY_SECRET"
+        },
+        {
+          "name": "RAZORPAY_WEBHOOK_SECRET",
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/RAZORPAY_WEBHOOK_SECRET"
+        },
+        {
+          "name": "AWS_S3_BUCKET",
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/AWS_S3_BUCKET"
+        },
+        {
+          "name": "SENTRY_DSN",
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/SENTRY_DSN"
+        },
+        {
+          "name": "GOOGLE_CLIENT_ID",
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/GOOGLE_CLIENT_ID"
+        },
+        {
+          "name": "GOOGLE_CLIENT_SECRET",
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/GOOGLE_CLIENT_SECRET"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/cookii-backend",
+          "awslogs-region": "ap-south-1",
+          "awslogs-stream-prefix": "ecs",
+          "awslogs-create-group": "true"
+        }
+      },
+      "healthCheck": {
+        "command": [
+          "CMD-SHELL",
+          "wget --no-verbose --tries=1 --spider http://localhost:4000/api/v1/health || exit 1"
+        ],
+        "interval": 30,
+        "timeout": 5,
+        "retries": 3,
+        "startPeriod": 60
+      }
+    }
+  ]
+}

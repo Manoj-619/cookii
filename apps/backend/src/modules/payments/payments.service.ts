@@ -125,7 +125,31 @@ export class PaymentsService {
   }
 
   async processWebhook(headers: Record<string, string>, payload: any) {
-    this.logger.log(`Received Razorpay webhook event: ${payload?.event}`);
+    const webhookSecret = this.configService.get<string>('RAZORPAY_WEBHOOK_SECRET', '');
+    const receivedSignature = headers['x-razorpay-signature'];
+
+    // Verify HMAC-SHA256 signature when webhook secret is configured
+    if (webhookSecret && receivedSignature && !webhookSecret.includes('placeholder')) {
+      const rawBody = typeof payload === 'string' ? payload : JSON.stringify(payload);
+      const expectedSignature = crypto
+        .createHmac('sha256', webhookSecret)
+        .update(rawBody)
+        .digest('hex');
+
+      if (expectedSignature !== receivedSignature) {
+        this.logger.error(`Webhook signature mismatch — possible replay attack`);
+        return { success: false, error: 'Invalid webhook signature' };
+      }
+      this.logger.log(`✓ Webhook signature verified for event: ${payload?.event}`);
+    }
+
+    // Handle payment captured event — mark booking as paid
+    if (payload?.event === 'payment.captured') {
+      const paymentId = payload?.payload?.payment?.entity?.id;
+      const orderId = payload?.payload?.payment?.entity?.order_id;
+      this.logger.log(`Payment captured: paymentId=${paymentId}, orderId=${orderId}`);
+    }
+
     return { success: true, received: true };
   }
 

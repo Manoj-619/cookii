@@ -1,7 +1,14 @@
 import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
-import { SendOtpDto, VerifyOtpDto, RefreshTokenDto, GoogleAuthDto } from './dto/auth.dto';
+import {
+  SendOtpDto,
+  VerifyOtpDto,
+  RefreshTokenDto,
+  GoogleAuthDto,
+  SendEmailOtpDto,
+  VerifyEmailOtpDto,
+} from './dto/auth.dto';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -24,6 +31,22 @@ export class AuthController {
     return this.authService.verifyOtp(dto);
   }
 
+  @Post('email/send')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Send OTP verification code to email' })
+  @ApiResponse({ status: 200, description: 'Email verification code dispatched' })
+  async sendEmailVerification(@Body() dto: SendEmailOtpDto) {
+    return this.authService.sendEmailVerification(dto.email);
+  }
+
+  @Post('email/verify')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Verify email OTP and issue JWT tokens' })
+  @ApiResponse({ status: 200, description: 'Email verified and logged in' })
+  async verifyEmailOtp(@Body() dto: VerifyEmailOtpDto) {
+    return this.authService.verifyEmailOtp(dto.email, dto.otp, dto.role);
+  }
+
   @Post('google')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Sign in with Google OAuth / ID token' })
@@ -40,5 +63,3 @@ export class AuthController {
     return this.authService.refreshToken(dto);
   }
 }
-
-

@@ -1,12 +1,13 @@
 import React from 'react';
 import { Tabs } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
+import { View, StyleSheet, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { colors, shadows } from '../../src/theme';
+import { Compass, CalendarDays, User } from 'lucide-react-native';
+import { colors, fonts } from '../../src/theme';
 
 export default function TabsLayout() {
   const insets = useSafeAreaInsets();
-  const bottomMargin = Math.max(insets.bottom, 12);
+  const bottomInset = Math.max(insets.bottom, Platform.OS === 'android' ? 10 : 8);
 
   return (
     <Tabs
@@ -16,56 +17,87 @@ export default function TabsLayout() {
         tabBarInactiveTintColor: colors.textSecondary,
         tabBarStyle: {
           position: 'absolute',
-          bottom: bottomMargin,
-          left: 20,
-          right: 20,
-          height: 68,
-          borderRadius: 34,
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: 58 + bottomInset,
           backgroundColor: '#FFFFFF',
-          borderTopWidth: 0,
-          borderWidth: 1,
-          borderColor: 'rgba(31, 58, 46, 0.06)',
-          paddingBottom: 8,
+          borderTopWidth: 1,
+          borderTopColor: 'rgba(21, 58, 39, 0.08)',
+          paddingBottom: bottomInset,
           paddingTop: 8,
-          ...shadows.floating,
+          elevation: 25,
+          shadowColor: '#000000',
+          shadowOffset: { width: 0, height: -2 },
+          shadowOpacity: 0.04,
+          shadowRadius: 8,
         },
         tabBarLabelStyle: {
+          fontFamily: fonts.bold,
           fontSize: 11,
-          fontWeight: '700',
-          marginBottom: 4,
-        },
-        tabBarIconStyle: {
-          marginTop: 4,
+          letterSpacing: 0.2,
+          marginTop: 2,
         },
       }}
     >
       <Tabs.Screen
         name="home"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'home' : 'home-outline'} size={22} color={color} />
+          title: 'Explore',
+          tabBarIcon: ({ focused }) => (
+            <View style={[s.iconBox, focused && s.iconBoxActive]}>
+              <Compass
+                size={21}
+                color={focused ? colors.accent : colors.textSecondary}
+                strokeWidth={focused ? 2.4 : 1.8}
+              />
+            </View>
           ),
         }}
       />
       <Tabs.Screen
         name="bookings"
         options={{
-          title: 'My Bookings',
-          tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'calendar' : 'calendar-outline'} size={22} color={color} />
+          title: 'Bookings',
+          tabBarIcon: ({ focused }) => (
+            <View style={[s.iconBox, focused && s.iconBoxActive]}>
+              <CalendarDays
+                size={21}
+                color={focused ? colors.accent : colors.textSecondary}
+                strokeWidth={focused ? 2.4 : 1.8}
+              />
+            </View>
           ),
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
-          title: 'Profile',
-          tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'person' : 'person-outline'} size={22} color={color} />
+          title: 'Account',
+          tabBarIcon: ({ focused }) => (
+            <View style={[s.iconBox, focused && s.iconBoxActive]}>
+              <User
+                size={21}
+                color={focused ? colors.accent : colors.textSecondary}
+                strokeWidth={focused ? 2.4 : 1.8}
+              />
+            </View>
           ),
         }}
       />
     </Tabs>
   );
 }
+
+const s = StyleSheet.create({
+  iconBox: {
+    paddingHorizontal: 12,
+    paddingVertical: 3,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  iconBoxActive: {
+    backgroundColor: '#EEF9F1',
+  },
+});

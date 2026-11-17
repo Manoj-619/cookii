@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { MongooseModule } from '@nestjs/mongoose';
 
+import { AppController } from './app.controller';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { CooksModule } from './modules/cooks/cooks.module';
@@ -66,6 +67,7 @@ const nodeEnv = process.env.NODE_ENV || 'development';
     RatingsModule,
     AdminModule,
   ],
+  controllers: [AppController],
 })
 export class AppModule {}
 

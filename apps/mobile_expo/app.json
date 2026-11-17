@@ -1,9 +1,8 @@
-
 {
   "expo": {
-    "name": "Cookii",
-    "slug": "cookii",
-    "scheme": "cookii",
+    "name": "Zapeat",
+    "slug": "zapeat",
+    "scheme": "zapeat",
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
@@ -13,17 +12,19 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#A7E3B5",
+          "backgroundColor": "#5BBF7F",
           "resizeMode": "contain"
         }
       ]
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "online.zapeat.app"
     },
     "android": {
+      "package": "online.zapeat.app",
       "adaptiveIcon": {
-        "backgroundColor": "#A7E3B5"
+        "backgroundColor": "#5BBF7F"
       }
     }
   }

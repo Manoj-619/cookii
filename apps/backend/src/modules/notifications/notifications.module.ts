@@ -1,23 +1,21 @@
-import { Injectable, Logger, Module } from '@nestjs/common';
-
-@Injectable()
-export class NotificationsService {
-  private readonly logger = new Logger(NotificationsService.name);
-
-  async sendPushNotification(deviceToken: string, title: string, body: string, data?: Record<string, string>) {
-    this.logger.log(`[FCM Mock] Push to ${deviceToken.slice(0, 10)}...: "${title}" - "${body}"`);
-    return { success: true };
-  }
-
-  async sendSms(phone: string, text: string) {
-    this.logger.log(`[SMS Mock] SMS to ${phone}: "${text}"`);
-    return { success: true };
-  }
-}
+import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
+import { NotificationsService } from './notifications.service';
+import { EmailService } from './email.service';
+import {
+  NotificationLog,
+  NotificationLogSchema,
+} from './schemas/notification.schema';
+import { User, UserSchema } from '../users/schemas/user.schema';
 
 @Module({
-  providers: [NotificationsService],
-  exports: [NotificationsService],
+  imports: [
+    MongooseModule.forFeature([
+      { name: NotificationLog.name, schema: NotificationLogSchema },
+      { name: User.name, schema: UserSchema },
+    ]),
+  ],
+  providers: [NotificationsService, EmailService],
+  exports: [NotificationsService, EmailService],
 })
 export class NotificationsModule {}
-

@@ -1,0 +1,31 @@
+{
+  "expo": {
+    "name": "Zapeat Partner",
+    "slug": "zapeat-partner",
+    "scheme": "zapeat-partner",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#5BBF7F",
+          "resizeMode": "contain"
+        }
+      ]
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "online.zapeat.cook"
+    },
+    "android": {
+      "package": "online.zapeat.cook",
+      "adaptiveIcon": {
+        "backgroundColor": "#5BBF7F"
+      }
+    }
+  }
+}

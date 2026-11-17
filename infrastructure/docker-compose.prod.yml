@@ -1,0 +1,66 @@
+# Production-like local environment
+version: '3.9'
+services:
+  mongodb:
+    image: mongo:7
+    restart: unless-stopped
+    ports: ['27017:27017']
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: cookii
+      MONGO_INITDB_ROOT_PASSWORD: cookii_dev_pass
+      MONGO_INITDB_DATABASE: cookii_dev
+    volumes:
+      - mongo_data:/data/db
+    networks: [cookii-net]
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports: ['6379:6379']
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redis_data:/data
+    networks: [cookii-net]
+
+  backend:
+    build:
+      context: ../apps/backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports: ['4000:4000']
+    env_file: ['../.env']
+    environment:
+      NODE_ENV: production
+      MONGODB_URI: mongodb://cookii:cookii_dev_pass@mongodb:27017/cookii_dev?authSource=admin
+      REDIS_HOST: redis
+      REDIS_PORT: '6379'
+    depends_on: [mongodb, redis]
+    networks: [cookii-net]
+
+  admin:
+    build:
+      context: ../apps/admin
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports: ['3000:3000']
+    environment:
+      NEXT_PUBLIC_API_URL: http://backend:4000/api/v1
+    depends_on: [backend]
+    networks: [cookii-net]
+
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    ports: ['80:80', '443:443']
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on: [backend, admin]
+    networks: [cookii-net]
+
+volumes:
+  mongo_data:
+  redis_data:
+
+networks:
+  cookii-net:
+    driver: bridge
