@@ -2,7 +2,7 @@ import { Controller, Get, Post, Param, Body, Headers } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { ChatService } from './chat.service';
 import { SendMessageDto, TriggerSosDto } from './dto/chat.dto';
-import { ActorType } from '@cookii/shared-types';
+import { ActorType } from '@zapeat/shared-types';
 
 @ApiTags('Chat & Safety')
 @ApiBearerAuth()

@@ -1,17 +1,17 @@
 {
-  "family": "cookii-backend",
+  "family": "ZapEat-backend",
   "networkMode": "awsvpc",
   "requiresCompatibilities": [
     "FARGATE"
   ],
   "cpu": "512",
   "memory": "1024",
-  "executionRoleArn": "arn:aws:iam::<AWS_ACCOUNT_ID>:role/cookii-ecs-execution-role",
-  "taskRoleArn": "arn:aws:iam::<AWS_ACCOUNT_ID>:role/cookii-ecs-task-role",
+  "executionRoleArn": "arn:aws:iam::<AWS_ACCOUNT_ID>:role/ZapEat-ecs-execution-role",
+  "taskRoleArn": "arn:aws:iam::<AWS_ACCOUNT_ID>:role/ZapEat-ecs-task-role",
   "containerDefinitions": [
     {
-      "name": "cookii-backend",
-      "image": "<AWS_ACCOUNT_ID>.dkr.ecr.ap-south-1.amazonaws.com/cookii-backend:latest",
+      "name": "ZapEat-backend",
+      "image": "<AWS_ACCOUNT_ID>.dkr.ecr.ap-south-1.amazonaws.com/ZapEat-backend:latest",
       "essential": true,
       "portMappings": [
         {
@@ -57,7 +57,7 @@
         },
         {
           "name": "AWS_SES_FROM_EMAIL",
-          "value": "noreply@cookii.in"
+          "value": "noreply@ZapEat.in"
         },
         {
           "name": "LOG_LEVEL",
@@ -65,91 +65,91 @@
         },
         {
           "name": "CORS_ORIGIN",
-          "value": "https://admin.cookii.in,https://cookii.in"
+          "value": "https://admin.ZapEat.in,https://ZapEat.in"
         }
       ],
       "secrets": [
         {
           "name": "MONGODB_URI",
-          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/MONGODB_URI"
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/ZapEat/production/MONGODB_URI"
         },
         {
           "name": "REDIS_HOST",
-          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/REDIS_HOST"
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/ZapEat/production/REDIS_HOST"
         },
         {
           "name": "REDIS_PORT",
-          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/REDIS_PORT"
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/ZapEat/production/REDIS_PORT"
         },
         {
           "name": "REDIS_PASSWORD",
-          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/REDIS_PASSWORD"
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/ZapEat/production/REDIS_PASSWORD"
         },
         {
           "name": "REDIS_TLS",
-          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/REDIS_TLS"
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/ZapEat/production/REDIS_TLS"
         },
         {
           "name": "JWT_ACCESS_SECRET",
-          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/JWT_ACCESS_SECRET"
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/ZapEat/production/JWT_ACCESS_SECRET"
         },
         {
           "name": "JWT_REFRESH_SECRET",
-          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/JWT_REFRESH_SECRET"
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/ZapEat/production/JWT_REFRESH_SECRET"
         },
         {
           "name": "ADMIN_JWT_SECRET",
-          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/ADMIN_JWT_SECRET"
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/ZapEat/production/ADMIN_JWT_SECRET"
         },
         {
           "name": "OTP_PROVIDER",
-          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/OTP_PROVIDER"
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/ZapEat/production/OTP_PROVIDER"
         },
         {
           "name": "MSG91_AUTH_KEY",
-          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/MSG91_AUTH_KEY"
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/ZapEat/production/MSG91_AUTH_KEY"
         },
         {
           "name": "MSG91_TEMPLATE_ID",
-          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/MSG91_TEMPLATE_ID"
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/ZapEat/production/MSG91_TEMPLATE_ID"
         },
         {
           "name": "MSG91_SENDER",
-          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/MSG91_SENDER"
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/ZapEat/production/MSG91_SENDER"
         },
         {
           "name": "RAZORPAY_KEY_ID",
-          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/RAZORPAY_KEY_ID"
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/ZapEat/production/RAZORPAY_KEY_ID"
         },
         {
           "name": "RAZORPAY_KEY_SECRET",
-          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/RAZORPAY_KEY_SECRET"
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/ZapEat/production/RAZORPAY_KEY_SECRET"
         },
         {
           "name": "RAZORPAY_WEBHOOK_SECRET",
-          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/RAZORPAY_WEBHOOK_SECRET"
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/ZapEat/production/RAZORPAY_WEBHOOK_SECRET"
         },
         {
           "name": "AWS_S3_BUCKET",
-          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/AWS_S3_BUCKET"
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/ZapEat/production/AWS_S3_BUCKET"
         },
         {
           "name": "SENTRY_DSN",
-          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/SENTRY_DSN"
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/ZapEat/production/SENTRY_DSN"
         },
         {
           "name": "GOOGLE_CLIENT_ID",
-          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/GOOGLE_CLIENT_ID"
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/ZapEat/production/GOOGLE_CLIENT_ID"
         },
         {
           "name": "GOOGLE_CLIENT_SECRET",
-          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/cookii/production/GOOGLE_CLIENT_SECRET"
+          "valueFrom": "arn:aws:ssm:ap-south-1:<AWS_ACCOUNT_ID>:parameter/ZapEat/production/GOOGLE_CLIENT_SECRET"
         }
       ],
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "/ecs/cookii-backend",
+          "awslogs-group": "/ecs/ZapEat-backend",
           "awslogs-region": "ap-south-1",
           "awslogs-stream-prefix": "ecs",
           "awslogs-create-group": "true"

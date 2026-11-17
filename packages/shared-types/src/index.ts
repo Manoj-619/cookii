@@ -1,5 +1,5 @@
 /**
- * Cookii Shared Domain Types and Enums
+ * ZapEat Shared Domain Types and Enums
  * Production-grade home cook booking platform for Bengaluru, India
  */
 

@@ -1,11 +1,11 @@
 /**
- * Cookii Cook App - API Client
- * ────────────────────────────
+ * ZapEat API Client
+ * ─────────────────
  * Axios instance with:
- *  • Base URL from EXPO_PUBLIC_API_URL env variable (defaults to http://localhost:4000/api/v1)
- *  • Request interceptor: auto-attaches Bearer JWT access token
- *  • Response interceptor: on 401, silently refresh token and retry queued requests
- *  • Typed apiGet / apiPost helpers
+ *  • Base URL from EXPO_PUBLIC_API_URL env variable
+ *  • Request interceptor: auto-attach Bearer JWT access token
+ *  • Response interceptor: on 401, silently refresh token and retry once
+ *  • TypeScript-typed helper methods for every API endpoint
  */
 
 import axios, {
@@ -15,7 +15,8 @@ import axios, {
   InternalAxiosRequestConfig,
 } from 'axios';
 
-// ─── Token store in-memory bridge ─────────────────────────────────────────────
+// ─── Token store (in-memory bridge from AsyncStorage-backed Zustand store) ─────
+// We lazily resolve the token at request time to avoid circular imports.
 let _getAccessToken: (() => string | null) | null = null;
 let _getRefreshToken: (() => string | null) | null = null;
 let _onTokenRefreshed: ((accessToken: string, refreshToken: string) => void) | null = null;
@@ -85,10 +86,12 @@ apiClient.interceptors.response.use(
       _retried?: boolean;
     };
 
+    // Only handle 401 Unauthorized once per request
     if (error.response?.status !== 401 || originalRequest._retried) {
       return Promise.reject(error);
     }
 
+    // Don't try to refresh the refresh-token endpoint itself
     if (originalRequest.url?.includes('/auth/token/refresh')) {
       _onAuthExpired?.();
       return Promise.reject(error);
@@ -97,6 +100,7 @@ apiClient.interceptors.response.use(
     originalRequest._retried = true;
 
     if (_isRefreshing) {
+      // Queue request until ongoing refresh finishes
       return new Promise((resolve, reject) => {
         _failedQueue.push({ resolve, reject, config: originalRequest });
       });
@@ -132,7 +136,6 @@ apiClient.interceptors.response.use(
 export interface ApiResponse<T = unknown> {
   success: boolean;
   data: T;
-  message?: string;
 }
 
 // ─── Generic typed GET/POST helpers ─────────────────────────────────────────

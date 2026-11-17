@@ -38,7 +38,7 @@ async function bootstrap() {
 
   // Swagger OpenAPI documentation
   const swaggerConfig = new DocumentBuilder()
-    .setTitle('Cookii API')
+    .setTitle('ZapEat API')
     .setDescription(
       'Production-grade, on-demand home cook booking platform for Bengaluru, India.\n\n' +
       'Features: Phone OTP, Cook Verification Gate, Strict Booking State Machine, Realtime Matching, ' +
@@ -68,7 +68,7 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('docs', app, document, {
-    customSiteTitle: 'Cookii API Explorer',
+    customSiteTitle: 'ZapEat API Explorer',
     swaggerOptions: {
       persistAuthorization: true,
       tagsSorter: 'alpha',
@@ -78,7 +78,7 @@ async function bootstrap() {
   const port = process.env.PORT || 4000;
   await app.listen(port);
 
-  logger.log(`🌿 Cookii API Monolith running on: http://localhost:${port}/${apiPrefix}`);
+  logger.log(`🌿 ZapEat API Monolith running on: http://localhost:${port}/${apiPrefix}`);
   logger.log(`📖 Swagger API Documentation available at: http://localhost:${port}/docs`);
 }
 

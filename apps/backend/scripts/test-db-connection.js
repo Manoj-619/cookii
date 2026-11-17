@@ -1,7 +1,7 @@
 /**
  * MongoDB Atlas Connection Diagnostic Tool
  * Usage:
- *   node scripts/test-db-connection.js "mongodb+srv://user:pass@cluster0.xxx.mongodb.net/cookii?retryWrites=true&w=majority"
+ *   node scripts/test-db-connection.js "mongodb+srv://user:pass@cluster0.xxx.mongodb.net/ZapEat?retryWrites=true&w=majority"
  * Or runs with MONGODB_URI from .env
  */
 const mongoose = require('mongoose');
@@ -36,12 +36,12 @@ if (!uri) {
 }
 
 if (!uri) {
-  uri = 'mongodb://127.0.0.1:27017/cookii';
+  uri = 'mongodb://127.0.0.1:27017/ZapEat';
 }
 
 const safeUri = uri.replace(/\/\/([^:]+):([^@]+)@/, '//$1:****@');
 console.log('\n========================================');
-console.log('   Cookii MongoDB Connection Diagnostic');
+console.log('   ZapEat MongoDB Connection Diagnostic');
 console.log('========================================');
 console.log(`Connecting to: ${safeUri}\n`);
 
@@ -65,7 +65,7 @@ console.log(`Connecting to: ${safeUri}\n`);
     const pingRes = await admin.ping();
     console.log(`  Ping Check:    ${JSON.stringify(pingRes)}`);
 
-    console.log('\nAtlas database is active and ready for Cookii production!\n');
+    console.log('\nAtlas database is active and ready for ZapEat production!\n');
     await mongoose.disconnect();
     process.exit(0);
   } catch (err) {

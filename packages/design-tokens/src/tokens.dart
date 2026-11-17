@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-/// Cookii Unified Design Tokens for Flutter
-class CookiiColors {
+/// ZapEat Unified Design Tokens for Flutter
+class ZapEatColors {
   // Light Theme Colors
   static const Color brandPrimary = Color(0xFFE05315);
   static const Color brandPrimaryHover = Color(0xFFC4430D);
@@ -42,7 +42,7 @@ class CookiiColors {
   static const Color info = Color(0xFF0284C7);
 }
 
-class CookiiSpacing {
+class ZapEatSpacing {
   static const double none = 0;
   static const double xs2 = 2;
   static const double xs = 4;
@@ -57,7 +57,7 @@ class CookiiSpacing {
   static const double xl6 = 64;
 }
 
-class CookiiRadii {
+class ZapEatRadii {
   static const double none = 0;
   static const double xs = 4;
   static const double sm = 8;

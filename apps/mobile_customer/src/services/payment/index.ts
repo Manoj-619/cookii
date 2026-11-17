@@ -17,7 +17,7 @@ import { PaymentRequest, PaymentResult } from './types';
 // Customer name/phone are injected at checkout time via the request object.
 // We supply fallbacks here; the provider will prefer request.customer values.
 export const paymentService: PaymentProvider = new RazorpayPaymentProvider({
-  customerName: 'Cookii Customer',
+  customerName: 'ZapEat Customer',
   customerPhone: '9999999999',
 });
 

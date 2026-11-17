@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { CookOnboardDto, UploadDocumentDto, ToggleAvailabilityDto, UpdateLocationDto } from './dto/cooks.dto';
-import { CookVerificationStatus } from '@cookii/shared-types';
+import { CookVerificationStatus } from '@zapeat/shared-types';
 
 @Injectable()
 export class CooksService {

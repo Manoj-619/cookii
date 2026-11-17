@@ -19,7 +19,7 @@ import {
   UserRole,
   CookVerificationStatus,
   BookingStatus,
-} from '@cookii/shared-types';
+} from '@zapeat/shared-types';
 import { User, UserDocument } from '../users/schemas/user.schema';
 import { Booking, BookingDocument } from '../bookings/schemas/booking.schema';
 import { NotificationsService } from '../notifications/notifications.service';
@@ -40,11 +40,11 @@ export class AdminService {
       'ADMIN_JWT_SECRET',
       this.configService.get<string>(
         'JWT_ACCESS_SECRET',
-        'cookii_dev_jwt_access_secret_super_secure_32chars',
+        'ZapEat_dev_jwt_access_secret_super_secure_32chars',
       ),
     );
     this.defaultAdminEmail = this.configService
-      .get<string>('ADMIN_INITIAL_EMAIL', 'ops@cookii.in')
+      .get<string>('ADMIN_INITIAL_EMAIL', 'ops@ZapEat.in')
       .toLowerCase()
       .trim();
   }
@@ -56,7 +56,7 @@ export class AdminService {
     const email = dto.email.toLowerCase().trim();
     const defaultPassword = this.configService.get<string>(
       'ADMIN_INITIAL_PASSWORD',
-      'CookiiAdmin@2026!',
+      'ZapEatAdmin@2026!',
     );
 
     let user = await this.userModel.findOne({ email }).select('+passwordHash');
@@ -534,7 +534,7 @@ export class AdminService {
     await this.notificationsService.sendPush(
       cookId,
       'Cook Profile Approved! 🎉',
-      'Congratulations! Your Cookii kitchen verification has been approved. You can now toggle online and receive booking offers.',
+      'Congratulations! Your ZapEat kitchen verification has been approved. You can now toggle online and receive booking offers.',
       { action: 'OPEN_AVAILABILITY' },
     );
 
@@ -610,7 +610,7 @@ export class AdminService {
     await this.notificationsService.sendPush(
       cookId,
       'Account Suspended',
-      'Your Cookii partner account has been temporarily suspended. Please reach out to operations support.',
+      'Your ZapEat partner account has been temporarily suspended. Please reach out to operations support.',
       { action: 'CONTACT_SUPPORT' },
     );
 

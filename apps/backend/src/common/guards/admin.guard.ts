@@ -7,7 +7,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 import * as jwt from 'jsonwebtoken';
 import { JwtAuthGuard, JwtPayload } from './jwt-auth.guard';
-import { UserRole } from '@cookii/shared-types';
+import { UserRole } from '@zapeat/shared-types';
 
 @Injectable()
 export class AdminGuard extends JwtAuthGuard {
@@ -19,7 +19,7 @@ export class AdminGuard extends JwtAuthGuard {
       'ADMIN_JWT_SECRET',
       configService.get<string>(
         'JWT_ACCESS_SECRET',
-        'cookii_dev_jwt_access_secret_super_secure_32chars',
+        'ZapEat_dev_jwt_access_secret_super_secure_32chars',
       ),
     );
   }

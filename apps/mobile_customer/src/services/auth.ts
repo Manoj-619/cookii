@@ -1,5 +1,5 @@
 /**
- * Cookii Auth Service
+ * ZapEat Auth Service
  * ───────────────────
  * Thin typed wrappers over the backend auth API.
  * All calls go through the shared Axios apiClient.

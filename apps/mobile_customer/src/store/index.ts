@@ -97,7 +97,7 @@ export const useAuthStore = create<AuthState>()(
       },
     }),
     {
-      name: 'cookii-auth',
+      name: 'ZapEat-auth',
       ...config,
     },
   ),
@@ -118,7 +118,7 @@ export const useUserStore = create<{
 }>()(
   persist(
     (set) => ({
-      name: 'Cookii Guest',
+      name: 'ZapEat Guest',
       avatarInitials: 'CG',
       favoriteCookIds: ['cook-1', 'cook-2'],
       addresses,
@@ -146,7 +146,7 @@ export const useUserStore = create<{
       removeAddress: (id) =>
         set((s) => ({ addresses: s.addresses.filter((a) => a.id !== id) })),
     }),
-    { name: 'cookii-user', ...config },
+    { name: 'ZapEat-user', ...config },
   ),
 );
 
@@ -223,7 +223,7 @@ export const useBookingStore = create<{
           ),
         })),
     }),
-    { name: 'cookii-bookings', ...config },
+    { name: 'ZapEat-bookings', ...config },
   ),
 );
 
@@ -273,6 +273,6 @@ export const useWalletStore = create<{
         return true;
       },
     }),
-    { name: 'cookii-wallet', ...config },
+    { name: 'ZapEat-wallet', ...config },
   ),
 );

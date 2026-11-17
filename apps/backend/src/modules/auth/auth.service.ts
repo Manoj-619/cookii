@@ -16,7 +16,7 @@ import {
   RefreshTokenDto,
   GoogleAuthDto,
 } from './dto/auth.dto';
-import { UserRole } from '@cookii/shared-types';
+import { UserRole } from '@zapeat/shared-types';
 import { User, UserDocument } from '../users/schemas/user.schema';
 import { OtpRecord, OtpDocument } from './schemas/otp.schema';
 import { OtpProvider, OTP_PROVIDER } from './otp.provider';
@@ -41,11 +41,11 @@ export class AuthService {
   ) {
     this.accessSecret = this.configService.get<string>(
       'JWT_ACCESS_SECRET',
-      'cookii_dev_jwt_access_secret_super_secure_32chars',
+      'ZapEat_dev_jwt_access_secret_super_secure_32chars',
     );
     this.refreshSecret = this.configService.get<string>(
       'JWT_REFRESH_SECRET',
-      'cookii_dev_jwt_refresh_secret_super_secure_32chars',
+      'ZapEat_dev_jwt_refresh_secret_super_secure_32chars',
     );
     this.accessExpiresIn = this.configService.get<string>('JWT_ACCESS_EXPIRES_IN', '1h');
     this.refreshExpiresIn = this.configService.get<string>('JWT_REFRESH_EXPIRES_IN', '30d');
@@ -323,8 +323,8 @@ export class AuthService {
   async googleAuth(dto: GoogleAuthDto) {
     this.logger.log(`Google authentication attempt for: ${dto.email || 'token verification'}`);
 
-    let email = dto.email || 'customer@cookii.in';
-    let name = dto.name || 'Cookii Diner';
+    let email = dto.email || 'customer@ZapEat.in';
+    let name = dto.name || 'ZapEat Diner';
     let photoUrl =
       dto.photoUrl ||
       'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200';

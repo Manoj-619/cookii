@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsEnum, IsNumber, Min, Max, IsOptional, IsString } from 'class-validator';
-import { ServiceType } from '@cookii/shared-types';
+import { ServiceType } from '@zapeat/shared-types';
 
 export class CalculateFareDto {
   @ApiProperty({ enum: ServiceType, example: ServiceType.LUNCH })
@@ -25,14 +25,14 @@ export class CalculateFareDto {
   @IsNumber()
   latitude!: number;
 
-  @ApiProperty({ example: 'NAMMACOOKII', required: false })
+  @ApiProperty({ example: 'NAMMAZapEat', required: false })
   @IsOptional()
   @IsString()
   couponCode?: string;
 }
 
 export class ValidateCouponDto {
-  @ApiProperty({ example: 'NAMMACOOKII' })
+  @ApiProperty({ example: 'NAMMAZapEat' })
   @IsNotEmpty()
   @IsString()
   code!: string;

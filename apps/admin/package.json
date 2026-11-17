@@ -1,5 +1,5 @@
 {
-  "name": "@cookii/admin",
+  "name": "@zapeat/admin",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -9,8 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@cookii/design-tokens": "workspace:*",
-    "@cookii/shared-types": "workspace:*",
+    "@zapeat/design-tokens": "workspace:*",
+    "@zapeat/shared-types": "workspace:*",
     "lucide-react": "^1.16.0",
     "next": "^15.1.0",
     "react": "^19.0.0",

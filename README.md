@@ -1,4 +1,4 @@
-# Cookii 🌿
+# ZapEat 🌿
 
 Home-cooking booking MVP built with Expo SDK 54, React Native, TypeScript, Expo Router, Zustand and AsyncStorage. All bookings and payments are **simulated**; no real charges are made.
 

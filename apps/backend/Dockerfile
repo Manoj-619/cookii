@@ -9,8 +9,8 @@ COPY packages/ ./packages/
 COPY apps/backend/ ./apps/backend/
 
 RUN pnpm install --frozen-lockfile || pnpm install
-RUN pnpm --filter @cookii/shared-types run build
-RUN pnpm --filter @cookii/backend run build
+RUN pnpm --filter @ZapEat/shared-types run build
+RUN pnpm --filter @ZapEat/backend run build
 
 FROM node:22-alpine AS runner
 

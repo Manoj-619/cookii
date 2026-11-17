@@ -3,7 +3,9 @@ import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const token = request.cookies.get('cookii_admin_token')?.value;
+  const token =
+    request.cookies.get('ZapEat_admin_token')?.value ||
+    request.cookies.get('cookii_admin_token')?.value;
 
   // Protected route prefixes
   const protectedPaths = [

@@ -166,7 +166,7 @@ export default function SettingsPage() {
                 </div>
                 <div>
                   <p className="font-bold text-gray-900">Priya Sharma</p>
-                  <p className="text-gray-500">ops@cookii.in • Senior Operations Lead</p>
+                  <p className="text-gray-500">ops@ZapEat.in • Senior Operations Lead</p>
                 </div>
               </div>
               <span className="font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">

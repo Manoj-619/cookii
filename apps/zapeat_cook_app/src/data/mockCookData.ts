@@ -4,7 +4,7 @@ export const mockProfile: CookProfile = {
   id: 'cook_sl_001',
   name: 'Sita Lakshmi',
   phone: '+91 98765 43210',
-  email: 'sita.lakshmi@cookii.in',
+  email: 'sita.lakshmi@ZapEat.in',
   avatarInitials: 'SL',
   rating: 4.9,
   totalBookings: 184,

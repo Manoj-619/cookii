@@ -1,6 +1,6 @@
 import tokens from './tokens.json';
 
-export const CookiiTokens = tokens;
+export const ZapEatTokens = tokens;
 
 export type ThemeMode = 'light' | 'dark';
 

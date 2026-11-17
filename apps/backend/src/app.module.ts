@@ -33,14 +33,31 @@ const nodeEnv = process.env.NODE_ENV || 'development';
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => {
-        const uri = config.get<string>(
+      useFactory: async (config: ConfigService) => {
+        let uri = config.get<string>(
           'MONGODB_URI',
-          'mongodb://127.0.0.1:27017/cookii_dev'
+          'mongodb://127.0.0.1:27017/ZapEat_dev'
         );
+
+        // Pre-flight check for Atlas connectivity to prevent blocking NestJS boot if Atlas IP is not whitelisted
+        if (uri.includes('mongodb+srv://')) {
+          const mongoose = await import('mongoose');
+          try {
+            const probe = await mongoose.createConnection(uri, {
+              serverSelectionTimeoutMS: 3000,
+            }).asPromise();
+            await probe.close();
+          } catch (e: any) {
+            logger.warn(
+              `⚠ Atlas cluster unreachable (${e.message?.split('\n')[0] || 'timeout'}). Falling back to local MongoDB (mongodb://127.0.0.1:27017/ZapEat_dev).`
+            );
+            uri = 'mongodb://127.0.0.1:27017/ZapEat_dev';
+          }
+        }
+
         return {
           uri,
-          serverSelectionTimeoutMS: 5000,
+          serverSelectionTimeoutMS: 4000,
           connectionFactory: (connection) => {
             connection.on('connected', () => {
               const safeHost = uri.split('@').pop()?.split('/')[0] || 'localhost';

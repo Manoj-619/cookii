@@ -2,7 +2,7 @@ import { Controller, Post, Get, Body, Param, Headers, Query } from '@nestjs/comm
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { BookingsService } from './bookings.service';
 import { CreateBookingDto, CancelBookingDto, VerifyStartOtpDto } from './dto/bookings.dto';
-import { ActorType } from '@cookii/shared-types';
+import { ActorType } from '@zapeat/shared-types';
 
 @ApiTags('Bookings')
 @ApiBearerAuth()

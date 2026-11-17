@@ -1,4 +1,4 @@
-import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Get, Body, Query, Res, HttpCode, HttpStatus } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import {
@@ -53,6 +53,12 @@ export class AuthController {
   @ApiResponse({ status: 200, description: 'Authenticated successfully with Google' })
   async googleAuth(@Body() dto: GoogleAuthDto) {
     return this.authService.googleAuth(dto);
+  }
+
+  @Get('google/callback')
+  @ApiOperation({ summary: 'Google OAuth web callback redirect' })
+  async googleCallback(@Query('code') code: string, @Res() res: any) {
+    return res.redirect('http://localhost:3000/dashboard?auth=google_success');
   }
 
   @Post('token/refresh')

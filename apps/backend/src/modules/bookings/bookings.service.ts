@@ -16,7 +16,7 @@ import {
   ActorType,
   PaymentMethod,
   PaymentStatus,
-} from '@cookii/shared-types';
+} from '@zapeat/shared-types';
 import { Booking, BookingDocument } from './schemas/booking.schema';
 
 @Injectable()

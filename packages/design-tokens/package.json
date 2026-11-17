@@ -1,5 +1,5 @@
 {
-  "name": "@cookii/design-tokens",
+  "name": "@zapeat/design-tokens",
   "version": "1.0.0",
   "private": true,
   "main": "dist/index.js",

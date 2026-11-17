@@ -1,5 +1,5 @@
 {
-  "name": "@cookii/shared-types",
+  "name": "@zapeat/shared-types",
   "version": "1.0.0",
   "private": true,
   "main": "dist/index.js",
