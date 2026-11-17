@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsArray, IsString, IsOptional, IsNumber, IsBoolean, IsEnum } from 'class-validator';
-import { DocumentType } from '@cookii/shared-types';
+import { DocumentType } from '@zapeat/shared-types';
 
 export class CookOnboardDto {
   @ApiProperty({ example: ['SOUTH_INDIAN', 'KARNATAKA_SPECIAL'], isArray: true })
@@ -35,7 +35,7 @@ export class UploadDocumentDto {
   @IsString()
   documentNumber?: string;
 
-  @ApiProperty({ example: 'https://res.cloudinary.com/cookii/image/upload/v1/docs/aadhaar.jpg' })
+  @ApiProperty({ example: 'https://res.cloudinary.com/ZapEat/image/upload/v1/docs/aadhaar.jpg' })
   @IsNotEmpty()
   @IsString()
   fileUrl!: string;

@@ -1,4 +1,4 @@
-# Cookii — Database Schema & Data Models Specification
+# ZapEat — Database Schema & Data Models Specification
 
 **Database Engine:** MongoDB 7.0 / MongoDB Atlas (Mongoose ODM)  
 **Geospatial Standard:** GeoJSON `Point` (`[longitude, latitude]`) with `2dsphere` index  
@@ -291,7 +291,7 @@ Core transaction entity driven by a strict state machine.
     platformFee: Number,       // e.g. 25
     gstAmount: Number,         // e.g. 23 (5%)
     discountAmount: Number,    // e.g. 50 (Coupon applied)
-    couponCode: String,        // e.g. 'NAMMACOOKII'
+    couponCode: String,        // e.g. 'NAMMAZapEat'
     totalCustomerPayable: Number, // e.g. 442
     cookPayoutAmount: Number,  // e.g. 350
     platformTakeRate: Number   // e.g. 0.20

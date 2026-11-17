@@ -2,7 +2,7 @@ import { ExecutionContext, ForbiddenException, UnauthorizedException } from '@ne
 import { ConfigService } from '@nestjs/config';
 import * as jwt from 'jsonwebtoken';
 import { AdminGuard } from './admin.guard';
-import { UserRole } from '@cookii/shared-types';
+import { UserRole } from '@zapeat/shared-types';
 
 describe('AdminGuard', () => {
   let guard: AdminGuard;

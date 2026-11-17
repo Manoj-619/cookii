@@ -1,6 +1,6 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { CalculateFareDto, ValidateCouponDto } from './dto/pricing.dto';
-import { ServiceType, PricingBreakdown } from '@cookii/shared-types';
+import { ServiceType, PricingBreakdown } from '@zapeat/shared-types';
 
 @Injectable()
 export class PricingService {
@@ -27,7 +27,7 @@ export class PricingService {
 
     // Coupon discount calculation
     let discountAmount = 0;
-    if (dto.couponCode && dto.couponCode.toUpperCase() === 'NAMMACOOKII') {
+    if (dto.couponCode && dto.couponCode.toUpperCase() === 'NAMMAZapEat') {
       discountAmount = Math.min(50, subtotal * 0.2);
     }
 
@@ -59,11 +59,11 @@ export class PricingService {
   }
 
   validateCoupon(dto: ValidateCouponDto) {
-    if (dto.code.toUpperCase() === 'NAMMACOOKII') {
+    if (dto.code.toUpperCase() === 'NAMMAZapEat') {
       return {
         success: true,
         data: {
-          code: 'NAMMACOOKII',
+          code: 'NAMMAZapEat',
           discountPercentage: 20,
           maxDiscount: 50,
           description: 'Flat 20% off up to ₹50 for Bengaluru foodies',

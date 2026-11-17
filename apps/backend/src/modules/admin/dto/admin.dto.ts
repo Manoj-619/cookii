@@ -11,12 +11,12 @@ import {
 import { Type } from 'class-transformer';
 
 export class AdminLoginDto {
-  @ApiProperty({ example: 'ops@cookii.in', description: 'Admin or Operations email' })
+  @ApiProperty({ example: 'ops@ZapEat.in', description: 'Admin or Operations email' })
   @IsNotEmpty()
   @IsEmail()
   email!: string;
 
-  @ApiProperty({ example: 'CookiiAdmin@2026!', description: 'Admin account password' })
+  @ApiProperty({ example: 'ZapEatAdmin@2026!', description: 'Admin account password' })
   @IsNotEmpty()
   @IsString()
   password!: string;

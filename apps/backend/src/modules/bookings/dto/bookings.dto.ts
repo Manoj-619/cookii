@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsEnum, IsNumber, Min, Max, IsArray, IsString, IsOptional, IsDateString } from 'class-validator';
-import { ServiceType, PaymentMethod } from '@cookii/shared-types';
+import { ServiceType, PaymentMethod } from '@zapeat/shared-types';
 
 export class CreateBookingDto {
   @ApiProperty({ example: 'addr_koramangala' })
@@ -40,7 +40,7 @@ export class CreateBookingDto {
   @IsEnum(PaymentMethod)
   paymentMethod!: PaymentMethod;
 
-  @ApiProperty({ example: 'NAMMACOOKII', required: false })
+  @ApiProperty({ example: 'NAMMAZapEat', required: false })
   @IsOptional()
   @IsString()
   couponCode?: string;

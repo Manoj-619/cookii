@@ -77,7 +77,7 @@ export default function CustomersPage() {
             Customer Directory
           </h2>
           <p className="text-xs md:text-sm text-gray-500 mt-0.5">
-            Registered Bangalore households, order frequencies, and Cookii Wallet ledger balances.
+            Registered Bangalore households, order frequencies, and ZapEat Wallet ledger balances.
           </p>
         </div>
       </div>

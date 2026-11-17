@@ -3,16 +3,16 @@ version: '3.8'
 services:
   mongodb:
     image: mongo:7
-    container_name: cookii-mongodb
+    container_name: ZapEat-mongodb
     restart: unless-stopped
     ports:
       - '27017:27017'
     environment:
-      MONGO_INITDB_DATABASE: cookii
+      MONGO_INITDB_DATABASE: ZapEat
     volumes:
       - mongo_data:/data/db
     networks:
-      - cookii-net
+      - ZapEat-net
     healthcheck:
       test: ['CMD', 'mongosh', '--eval', "db.adminCommand('ping')"]
       interval: 10s
@@ -21,14 +21,14 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: cookii-redis
+    container_name: ZapEat-redis
     restart: unless-stopped
     ports:
       - '6379:6379'
     volumes:
       - redis_data:/data
     networks:
-      - cookii-net
+      - ZapEat-net
     healthcheck:
       test: ['CMD', 'redis-cli', 'ping']
       interval: 10s
@@ -39,7 +39,7 @@ services:
     build:
       context: .
       dockerfile: apps/backend/Dockerfile
-    container_name: cookii-backend
+    container_name: ZapEat-backend
     restart: unless-stopped
     ports:
       - '4000:4000'
@@ -51,7 +51,7 @@ services:
       redis:
         condition: service_healthy
     networks:
-      - cookii-net
+      - ZapEat-net
     volumes:
       - ./apps/backend:/app/apps/backend
       - ./packages:/app/packages
@@ -61,7 +61,7 @@ services:
     build:
       context: .
       dockerfile: apps/admin/Dockerfile
-    container_name: cookii-admin
+    container_name: ZapEat-admin
     restart: unless-stopped
     ports:
       - '3000:3000'
@@ -70,7 +70,7 @@ services:
     depends_on:
       - backend
     networks:
-      - cookii-net
+      - ZapEat-net
     volumes:
       - ./apps/admin:/app/apps/admin
       - /app/apps/admin/node_modules
@@ -80,5 +80,5 @@ volumes:
   redis_data:
 
 networks:
-  cookii-net:
+  ZapEat-net:
     driver: bridge

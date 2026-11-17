@@ -338,7 +338,7 @@ export const MOCK_COOKS: Cook[] = [
       {
         id: 'DOC-104',
         type: 'FOOD_SAFETY_TRAINING',
-        title: 'Cookii FSSAI Hygiene Cert',
+        title: 'ZapEat FSSAI Hygiene Cert',
         documentNumber: 'CKI-HYG-4011',
         status: 'APPROVED',
         fileUrl: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=600&q=80',
@@ -831,7 +831,7 @@ export const MOCK_PAYMENTS: PaymentTransaction[] = [
     method: 'UPI',
     status: 'CAPTURED',
     createdAt: '2026-11-16T08:12:00Z',
-    description: 'Cookii Wallet instant topup',
+    description: 'ZapEat Wallet instant topup',
   },
   {
     id: 'TXN-904',
@@ -928,7 +928,7 @@ export const MOCK_PAYMENTS: PaymentTransaction[] = [
 export const MOCK_COUPONS: Coupon[] = [
   {
     id: 'CPN-101',
-    code: 'COOKIIFIRST',
+    code: 'ZapEatFIRST',
     discountPercent: 50,
     minOrderValue: 300,
     maxDiscount: 150,

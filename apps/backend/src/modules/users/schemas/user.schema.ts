@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { UserRole } from '@cookii/shared-types';
+import { UserRole } from '@zapeat/shared-types';
 
 export type UserDocument = User & Document;
 
@@ -12,7 +12,7 @@ export class User {
   @Prop({ type: String, sparse: true, index: true, lowercase: true, trim: true })
   email?: string;
 
-  @Prop({ type: String, required: true, default: 'Cookii Diner' })
+  @Prop({ type: String, required: true, default: 'ZapEat Diner' })
   name!: string;
 
   @Prop({ type: String, enum: UserRole, default: UserRole.CUSTOMER })

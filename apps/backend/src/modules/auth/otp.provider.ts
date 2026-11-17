@@ -36,7 +36,7 @@ export class Msg91OtpProvider implements OtpProvider {
   constructor(private readonly configService: ConfigService) {
     this.authKey = this.configService.get<string>('MSG91_AUTH_KEY');
     this.templateId = this.configService.get<string>('MSG91_TEMPLATE_ID');
-    this.sender = this.configService.get<string>('MSG91_SENDER', 'COOKII');
+    this.sender = this.configService.get<string>('MSG91_SENDER', 'ZapEat');
 
     if (!this.authKey || !this.templateId) {
       this.logger.warn(
@@ -125,7 +125,7 @@ export class TwilioOtpProvider implements OtpProvider {
       return;
     }
 
-    const messageBody = `Your Cookii verification code is ${otp}. Valid for 5 minutes. Please do not share this passcode.`;
+    const messageBody = `Your ZapEat verification code is ${otp}. Valid for 5 minutes. Please do not share this passcode.`;
     const endpoint = `https://api.twilio.com/2010-04-01/Accounts/${this.accountSid}/Messages.json`;
     const authHeader = `Basic ${Buffer.from(`${this.accountSid}:${this.authToken}`).toString('base64')}`;
 

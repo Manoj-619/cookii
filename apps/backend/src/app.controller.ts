@@ -9,7 +9,7 @@ export class AppController {
   getHealth() {
     return {
       status: 'ok',
-      service: 'cookii-backend',
+      service: 'ZapEat-backend',
       timestamp: new Date().toISOString(),
       uptime: Math.floor(process.uptime()),
     };

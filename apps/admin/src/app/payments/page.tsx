@@ -148,7 +148,7 @@ export default function PaymentsPage() {
               </span>
             </div>
             <p className="text-xs text-gray-400 mt-1">
-              Account: <code className="text-gray-300">rzp_live_cookii_blr</code> • Webhook endpoints responding in 85ms • Automated T+1 settlements to cook bank accounts active.
+              Account: <code className="text-gray-300">rzp_live_ZapEat_blr</code> • Webhook endpoints responding in 85ms • Automated T+1 settlements to cook bank accounts active.
             </p>
           </div>
         </div>

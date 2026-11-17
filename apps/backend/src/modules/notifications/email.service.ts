@@ -36,7 +36,7 @@ export class EmailService {
     this.fromEmail =
       this.configService.get<string>('SMTP_FROM') ||
       this.configService.get<string>('AWS_SES_FROM_EMAIL') ||
-      'Cookii <no-reply@cookii.in>';
+      'ZapEat <no-reply@ZapEat.in>';
 
     if (host && user && pass) {
       try {
@@ -103,7 +103,7 @@ export class EmailService {
    * Send 6-digit OTP verification code via email
    */
   async sendOtpEmail(to: string, otp: string): Promise<boolean> {
-    const subject = `Your Cookii Verification Code: ${otp}`;
+    const subject = `Your ZapEat Verification Code: ${otp}`;
     const html = `
 <!DOCTYPE html>
 <html lang="en">
@@ -120,11 +120,11 @@ export class EmailService {
           <tr>
             <td align="center">
               <div style="display: inline-block; background-color: #ECFDF5; border-radius: 16px; padding: 12px 20px; margin-bottom: 24px;">
-                <span style="font-size: 26px; font-weight: 800; color: #059669; letter-spacing: -0.5px;">Cookii</span>
+                <span style="font-size: 26px; font-weight: 800; color: #059669; letter-spacing: -0.5px;">ZapEat</span>
               </div>
               <h1 style="font-size: 24px; font-weight: 700; color: #111827; margin: 0 0 12px 0;">Verify Your Email</h1>
               <p style="font-size: 15px; color: #4B5563; line-height: 1.5; margin: 0 0 28px 0;">
-                Please use the single-use verification code below to sign in or verify your Cookii account.
+                Please use the single-use verification code below to sign in or verify your ZapEat account.
               </p>
               
               <div style="background-color: #F6FAF7; border: 2px dashed #10B981; border-radius: 18px; padding: 20px; margin-bottom: 24px;">
@@ -134,14 +134,14 @@ export class EmailService {
               </div>
 
               <p style="font-size: 13px; color: #6B7280; line-height: 1.4; margin: 0 0 28px 0;">
-                ⏱ This code is valid for <strong>5 minutes</strong>. For your security, do not share this passcode with anyone, including Cookii representatives.
+                ⏱ This code is valid for <strong>5 minutes</strong>. For your security, do not share this passcode with anyone, including ZapEat representatives.
               </p>
 
               <hr style="border: none; border-top: 1px solid #E5E7EB; margin: 28px 0;" />
 
               <p style="font-size: 12px; color: #9CA3AF; line-height: 1.5; margin: 0;">
-                Cookii Technologies Pvt. Ltd.<br/>
-                Bengaluru, Karnataka, India • <a href="https://cookii.in" style="color: #059669; text-decoration: none;">cookii.in</a>
+                ZapEat Technologies Pvt. Ltd.<br/>
+                Bengaluru, Karnataka, India • <a href="https://ZapEat.in" style="color: #059669; text-decoration: none;">ZapEat.in</a>
               </p>
             </td>
           </tr>
@@ -157,7 +157,7 @@ export class EmailService {
       to,
       subject,
       html,
-      `Your Cookii verification code is: ${otp}. It expires in 5 minutes.`
+      `Your ZapEat verification code is: ${otp}. It expires in 5 minutes.`
     );
   }
 
@@ -166,7 +166,7 @@ export class EmailService {
    */
   async sendBookingConfirmation(to: string, booking: BookingEmailData): Promise<boolean> {
     const bookingNum = booking.bookingNumber || booking.id || 'CK-BOOKING';
-    const subject = `Booking Confirmed #${bookingNum} - Cookii`;
+    const subject = `Booking Confirmed #${bookingNum} - ZapEat`;
     const formattedDate = booking.scheduledStartTime
       ? new Date(booking.scheduledStartTime).toLocaleString('en-IN', {
           timeZone: 'Asia/Kolkata',
@@ -197,7 +197,7 @@ export class EmailService {
             <td>
               <div style="text-align: center; margin-bottom: 24px;">
                 <div style="display: inline-block; background-color: #ECFDF5; border-radius: 16px; padding: 10px 20px;">
-                  <span style="font-size: 26px; font-weight: 800; color: #059669;">Cookii</span>
+                  <span style="font-size: 26px; font-weight: 800; color: #059669;">ZapEat</span>
                 </div>
                 <h1 style="font-size: 24px; font-weight: 700; color: #111827; margin: 16px 0 6px 0;">Booking Confirmed!</h1>
                 <p style="font-size: 14px; color: #059669; font-weight: 600; margin: 0;">Order #${bookingNum}</p>
@@ -259,7 +259,7 @@ export class EmailService {
               </div>
 
               <div style="text-align: center; margin-top: 28px;">
-                <a href="https://cookii.in/bookings/${booking.id || ''}" style="background-color: #059669; color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 12px; font-size: 14px; font-weight: 600; display: inline-block;">
+                <a href="https://ZapEat.in/bookings/${booking.id || ''}" style="background-color: #059669; color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 12px; font-size: 14px; font-weight: 600; display: inline-block;">
                   Track Live Booking
                 </a>
               </div>
@@ -267,8 +267,8 @@ export class EmailService {
               <hr style="border: none; border-top: 1px solid #E5E7EB; margin: 32px 0 20px 0;" />
 
               <p style="font-size: 12px; color: #9CA3AF; text-align: center; line-height: 1.5; margin: 0;">
-                Cookii Technologies Pvt. Ltd. • Bengaluru, Karnataka<br/>
-                Need help? Contact support at <a href="mailto:support@cookii.in" style="color: #059669;">support@cookii.in</a>
+                ZapEat Technologies Pvt. Ltd. • Bengaluru, Karnataka<br/>
+                Need help? Contact support at <a href="mailto:support@ZapEat.in" style="color: #059669;">support@ZapEat.in</a>
               </p>
             </td>
           </tr>
@@ -284,7 +284,7 @@ export class EmailService {
       to,
       subject,
       html,
-      `Your Cookii booking #${bookingNum} is confirmed for ${formattedDate}. Start Passcode: ${booking.startOtp || 'N/A'}. Total: ${totalAmount}.`
+      `Your ZapEat booking #${bookingNum} is confirmed for ${formattedDate}. Start Passcode: ${booking.startOtp || 'N/A'}. Total: ${totalAmount}.`
     );
   }
 
@@ -292,7 +292,7 @@ export class EmailService {
    * Send welcome email to newly onboarded diners or cooks
    */
   async sendWelcome(to: string, name: string): Promise<boolean> {
-    const subject = `Welcome to Cookii, ${name}! Fresh Home Food Awaits 🍲`;
+    const subject = `Welcome to ZapEat, ${name}! Fresh Home Food Awaits 🍲`;
     const html = `
 <!DOCTYPE html>
 <html lang="en">
@@ -310,19 +310,19 @@ export class EmailService {
             <td>
               <div style="text-align: center; margin-bottom: 24px;">
                 <div style="display: inline-block; background-color: #ECFDF5; border-radius: 16px; padding: 12px 24px;">
-                  <span style="font-size: 26px; font-weight: 800; color: #059669;">Cookii</span>
+                  <span style="font-size: 26px; font-weight: 800; color: #059669;">ZapEat</span>
                 </div>
               </div>
 
               <h1 style="font-size: 24px; font-weight: 700; color: #111827; margin: 0 0 12px 0;">
-                Namaskara, ${name}! Welcome to Cookii.
+                Namaskara, ${name}! Welcome to ZapEat.
               </h1>
               <p style="font-size: 15px; color: #4B5563; line-height: 1.6; margin: 0 0 24px 0;">
-                Say goodbye to unhealthy restaurant deliveries and hectic kitchen chores. With Cookii, verified home cooks prepare hot, nutritious, customized meals right in your Bengaluru kitchen.
+                Say goodbye to unhealthy restaurant deliveries and hectic kitchen chores. With ZapEat, verified home cooks prepare hot, nutritious, customized meals right in your Bengaluru kitchen.
               </p>
 
               <div style="background-color: #F6FAF7; border-radius: 18px; padding: 24px; margin-bottom: 28px;">
-                <h3 style="font-size: 16px; font-weight: 700; color: #065F46; margin: 0 0 16px 0;">How Cookii Works:</h3>
+                <h3 style="font-size: 16px; font-weight: 700; color: #065F46; margin: 0 0 16px 0;">How ZapEat Works:</h3>
                 
                 <div style="margin-bottom: 14px;">
                   <span style="display: inline-block; width: 24px; height: 24px; line-height: 24px; text-align: center; background-color: #059669; color: #fff; border-radius: 50%; font-size: 12px; font-weight: 700; margin-right: 8px;">1</span>
@@ -344,7 +344,7 @@ export class EmailService {
               </div>
 
               <div style="text-align: center; margin-bottom: 24px;">
-                <a href="https://cookii.in" style="background-color: #059669; color: #ffffff; text-decoration: none; padding: 14px 32px; border-radius: 12px; font-size: 15px; font-weight: 600; display: inline-block;">
+                <a href="https://ZapEat.in" style="background-color: #059669; color: #ffffff; text-decoration: none; padding: 14px 32px; border-radius: 12px; font-size: 15px; font-weight: 600; display: inline-block;">
                   Book Your First Cook
                 </a>
               </div>
@@ -352,8 +352,8 @@ export class EmailService {
               <hr style="border: none; border-top: 1px solid #E5E7EB; margin: 32px 0 20px 0;" />
 
               <p style="font-size: 12px; color: #9CA3AF; text-align: center; line-height: 1.5; margin: 0;">
-                Cookii Technologies Pvt. Ltd. • Bengaluru, Karnataka<br/>
-                Questions? Reply directly to this email or reach us at <a href="mailto:support@cookii.in" style="color: #059669;">support@cookii.in</a>
+                ZapEat Technologies Pvt. Ltd. • Bengaluru, Karnataka<br/>
+                Questions? Reply directly to this email or reach us at <a href="mailto:support@ZapEat.in" style="color: #059669;">support@ZapEat.in</a>
               </p>
             </td>
           </tr>
@@ -369,7 +369,7 @@ export class EmailService {
       to,
       subject,
       html,
-      `Namaskara ${name}! Welcome to Cookii. Fresh, healthy home cooking on demand in Bengaluru.`
+      `Namaskara ${name}! Welcome to ZapEat. Fresh, healthy home cooking on demand in Bengaluru.`
     );
   }
 }

@@ -1,5 +1,5 @@
 /**
- * Cookii Razorpay Service
+ * ZapEat Razorpay Service
  * ───────────────────────
  * Production Razorpay integration that works in both Expo Go (web checkout)
  * and native builds.

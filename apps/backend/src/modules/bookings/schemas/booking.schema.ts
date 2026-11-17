@@ -7,7 +7,7 @@ import {
   PaymentStatus,
   ActorType,
   PricingBreakdown,
-} from '@cookii/shared-types';
+} from '@zapeat/shared-types';
 
 export type BookingDocument = Booking & Document;
 

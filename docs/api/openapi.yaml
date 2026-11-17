@@ -1,15 +1,15 @@
 openapi: 3.0.3
 info:
-  title: Cookii API
+  title: ZapEat API
   description: Production-grade on-demand home cook booking platform for Bengaluru, India.
   version: 1.0.0
   contact:
-    name: Cookii Engineering
-    email: engineering@cookii.in
+    name: ZapEat Engineering
+    email: engineering@ZapEat.in
 servers:
   - url: http://localhost:4000/api/v1
     description: Local Development Server
-  - url: https://api.cookii.in/api/v1
+  - url: https://api.ZapEat.in/api/v1
     description: Production API
 
 paths:
@@ -738,7 +738,7 @@ components:
           example: 2
         longitude: { type: number, example: 77.6245 }
         latitude: { type: number, example: 12.9352 }
-        couponCode: { type: string, example: "NAMMACOOKII" }
+        couponCode: { type: string, example: "NAMMAZapEat" }
 
     FareBreakdownResponse:
       type: object
@@ -758,7 +758,7 @@ components:
         platformFee: { type: number, example: 25 }
         gstAmount: { type: number, example: 16.20 }
         discountAmount: { type: number, example: 50 }
-        couponCode: { type: string, example: "NAMMACOOKII" }
+        couponCode: { type: string, example: "NAMMAZapEat" }
         totalCustomerPayable: { type: number, example: 290.20 }
         cookPayoutAmount: { type: number, example: 240.00 }
 

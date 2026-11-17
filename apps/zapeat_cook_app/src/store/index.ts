@@ -100,7 +100,7 @@ export const useCookAuthStore = create<CookAuthState>()(
       },
     }),
     {
-      name: 'cookii-cook-auth',
+      name: 'ZapEat-cook-auth',
       ...config,
     },
   ),
@@ -178,7 +178,7 @@ export const useCookStore = create<CookStoreState>()(
         })),
     }),
     {
-      name: 'cookii-cook-state',
+      name: 'ZapEat-cook-state',
       ...config,
     },
   ),
@@ -276,7 +276,7 @@ export const useJobStore = create<JobStoreState>()(
       },
     }),
     {
-      name: 'cookii-cook-jobs',
+      name: 'ZapEat-cook-jobs',
       ...config,
     },
   ),

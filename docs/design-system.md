@@ -1,4 +1,4 @@
-# Cookii — Design System & UI/UX Specification
+# ZapEat — Design System & UI/UX Specification
 
 **Brand Identity:** Warm, Appetizing, Trustworthy, Calm  
 **Target Market:** Bengaluru, Karnataka, India  
@@ -9,7 +9,7 @@
 ## 1. Visual Language & Brand Tokens
 
 ### 1.1 Color Palette Philosophy
-Cookii deliberately avoids cold corporate blues, generic AI purple gradients, and aggressive discount neon yellows.  
+ZapEat deliberately avoids cold corporate blues, generic AI purple gradients, and aggressive discount neon yellows.  
 Instead, the palette is rooted in authentic kitchen culinary cues:
 - **Ember Terracotta (`#E05315` / `#F97316` in Dark):** The focal brand color evokes warm clay pots, simmering sambar, freshly tempered mustard seeds, and tawa warmth.
 - **Ivory Cream Canvas (`#FAF7F2` in Light):** Replaces clinical blinding white `#FFFFFF` with warm cream that feels calm and homelike.
@@ -151,7 +151,7 @@ flowchart TD
 6. **Transparent Price & Checkout Sheet:**
    - Clean breakdown: Base fare + Per-person add-on + GST (5%) - Coupon discount
    - Cook earnings transparency: "Cook receives ₹420 of this booking"
-   - Payment choices: UPI (GPay/PhonePe/Paytm direct intent), Cards, Cookii Wallet, Cash after cooking
+   - Payment choices: UPI (GPay/PhonePe/Paytm direct intent), Cards, ZapEat Wallet, Cash after cooking
 7. **Live Radar / Matching Screen:**
    - Soft pulsing radar animation over Koramangala/HSR map
    - "Notifying 3 verified cooks within 3.2 km..."
@@ -234,11 +234,11 @@ flowchart TD
 
 ## 5. Localisation & Regional Strings
 
-Cookii is built first for Bengaluru, requiring native language support for English, Kannada (`kn-IN`), and Hindi (`hi-IN`).
+ZapEat is built first for Bengaluru, requiring native language support for English, Kannada (`kn-IN`), and Hindi (`hi-IN`).
 
 | Key | English (`en`) | Kannada (`kn`) | Hindi (`hi`) |
 | :--- | :--- | :--- | :--- |
-| `app_name` | Cookii | ಕೂಕೀ | कूकी |
+| `app_name` | ZapEat | ಕೂಕೀ | कूकी |
 | `book_now_cta` | Book a Cook Now | ಈಗಲೇ ಅಡುಗೆಯವರನ್ನು ಬುಕ್ ಮಾಡಿ | अभी रसोइया बुक करें |
 | `service_breakfast` | Morning Breakfast | ಬೆಳಗಿನ ಉಪಹಾರ | सुबह का नाश्ता |
 | `service_lunch` | Afternoon Lunch | ಮಧ್ಯಾಹ್ನದ ಊಟ | दोपहर का भोजन |

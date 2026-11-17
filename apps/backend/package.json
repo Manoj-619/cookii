@@ -1,5 +1,5 @@
 {
-  "name": "@cookii/backend",
+  "name": "@zapeat/backend",
   "version": "1.0.0",
   "private": true,
   "description": "Cookii NestJS Modular Monolith Backend",
@@ -18,7 +18,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@cookii/shared-types": "workspace:*",
+    "@zapeat/shared-types": "workspace:*",
     "@nestjs/bullmq": "^11.0.0",
     "@nestjs/common": "^11.0.0",
     "@nestjs/config": "^4.0.0",

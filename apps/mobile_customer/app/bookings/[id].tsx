@@ -376,7 +376,7 @@ export default function BookingDetailScreen() {
               onPress={() =>
                 Alert.alert(
                   'Contact Cook',
-                  `Connecting you with ${booking.cookName} via Cookii secure masked line...`,
+                  `Connecting you with ${booking.cookName} via ZapEat secure masked line...`,
                   [{ text: 'Dismiss' }]
                 )
               }
@@ -462,7 +462,7 @@ export default function BookingDetailScreen() {
             </View>
             <View style={{ flex: 1, marginLeft: 12 }}>
               <Text style={addressCardStyles.line}>
-                {booking.address?.line || 'Cookii Residence, Bangalore'}
+                {booking.address?.line || 'ZapEat Residence, Bangalore'}
               </Text>
               {booking.address?.landmark && (
                 <Text style={addressCardStyles.landmark}>

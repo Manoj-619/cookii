@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import Razorpay from 'razorpay';
 import * as crypto from 'crypto';
 import { CreateRazorpayOrderDto, VerifyPaymentDto, WalletTopupDto } from './dto/payments.dto';
-import { LedgerAccount, LedgerEntryType } from '@cookii/shared-types';
+import { LedgerAccount, LedgerEntryType } from '@zapeat/shared-types';
 
 @Injectable()
 export class PaymentsService {

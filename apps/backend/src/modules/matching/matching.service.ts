@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { JobOfferStatus } from '@cookii/shared-types';
+import { JobOfferStatus } from '@zapeat/shared-types';
 
 @Injectable()
 export class MatchingService {

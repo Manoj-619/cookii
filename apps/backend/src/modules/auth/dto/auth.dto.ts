@@ -8,7 +8,7 @@ import {
   IsEmail,
   Matches,
 } from 'class-validator';
-import { UserRole } from '@cookii/shared-types';
+import { UserRole } from '@zapeat/shared-types';
 
 /**
  * Phone must be provided in one of two formats:

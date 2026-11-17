@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { SendMessageDto, TriggerSosDto } from './dto/chat.dto';
-import { SosAlertStatus, ActorType } from '@cookii/shared-types';
+import { SosAlertStatus, ActorType } from '@zapeat/shared-types';
 
 @Injectable()
 export class ChatService {

@@ -1,5 +1,5 @@
 /**
- * Cookii Cook Auth Service
+ * ZapEat Cook Auth Service
  * ────────────────────────
  * Wrappers over backend auth API specifically for cook partners (role: 'COOK').
  */

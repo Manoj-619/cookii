@@ -1,4 +1,4 @@
-# Cookii — System Architecture & Monolith Decoupling Guide
+# ZapEat — System Architecture & Monolith Decoupling Guide
 
 **Platform:** Production-grade, on-demand home cook booking platform for Bengaluru, India  
 **Architecture:** Modular Monolith with Event-Driven Decoupling  
@@ -22,7 +22,7 @@ flowchart TB
         SWAGGER[Swagger /docs Explorer]
     end
 
-    subgraph Monolith["Cookii Backend Monolith (NestJS Strict Mode)"]
+    subgraph Monolith["ZapEat Backend Monolith (NestJS Strict Mode)"]
         AUTH[Auth Module - Phone OTP & JWT]
         USERS[Users & Address Module]
         COOKS[Cooks & Verification Module]
@@ -123,8 +123,8 @@ stateDiagram-v2
 pnpm install
 
 # 2. Build shared packages
-pnpm --filter @cookii/shared-types run build
-pnpm --filter @cookii/design-tokens run build
+pnpm --filter @ZapEat/shared-types run build
+pnpm --filter @ZapEat/design-tokens run build
 
 # 3. Start local infra (MongoDB + Redis)
 docker-compose up -d mongodb redis

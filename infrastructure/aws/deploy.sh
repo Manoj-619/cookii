@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# Cookii AWS Deployment Script
+# ZapEat AWS Deployment Script
 # Production-ready CI/CD and manual deployment automation for ECS Fargate
 #
 # Usage:
@@ -83,7 +83,7 @@ if [[ -z "${AWS_ACCOUNT_ID:-}" ]]; then
   fi
 fi
 
-REPO_NAME="cookii-$APP"
+REPO_NAME="ZapEat-$APP"
 ECR_REGISTRY="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com"
 ECR_REPO="$ECR_REGISTRY/$REPO_NAME"
 
@@ -91,7 +91,7 @@ ECR_REPO="$ECR_REGISTRY/$REPO_NAME"
 TAG=$(git -C "$ROOT_DIR" rev-parse --short HEAD 2>/dev/null || echo "manual-$(date +%s)")
 
 log_info "=========================================================="
-log_info " Cookii AWS Deployment Initiated"
+log_info " ZapEat AWS Deployment Initiated"
 log_info " Target App     : $APP"
 log_info " Environment    : $ENV"
 log_info " AWS Region     : $AWS_REGION"
@@ -153,8 +153,8 @@ log_success "Images pushed to ECR."
 # ------------------------------------------------------------------------------
 # Trigger ECS Rolling Deployment
 # ------------------------------------------------------------------------------
-CLUSTER_NAME="cookii-$ENV"
-SERVICE_NAME="cookii-$APP"
+CLUSTER_NAME="ZapEat-$ENV"
+SERVICE_NAME="ZapEat-$APP"
 
 log_info "Triggering ECS service deployment on cluster '$CLUSTER_NAME' for service '$SERVICE_NAME'..."
 

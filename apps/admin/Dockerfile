@@ -9,9 +9,9 @@ COPY packages/ ./packages/
 COPY apps/admin/ ./apps/admin/
 
 RUN pnpm install --frozen-lockfile || pnpm install
-RUN pnpm --filter @cookii/design-tokens run build
-RUN pnpm --filter @cookii/shared-types run build
-RUN pnpm --filter @cookii/admin run build
+RUN pnpm --filter @ZapEat/design-tokens run build
+RUN pnpm --filter @ZapEat/shared-types run build
+RUN pnpm --filter @ZapEat/admin run build
 
 FROM node:22-alpine AS runner
 
@@ -30,5 +30,5 @@ COPY --from=builder /app/apps/admin/node_modules ./apps/admin/node_modules
 
 EXPOSE 3000
 
-CMD ["pnpm", "--filter", "@cookii/admin", "run", "start"]
+CMD ["pnpm", "--filter", "@ZapEat/admin", "run", "start"]
 

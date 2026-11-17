@@ -24,7 +24,7 @@ export class JwtAuthGuard implements CanActivate {
   constructor(private readonly configService: ConfigService) {
     this.accessSecret = this.configService.get<string>(
       'JWT_ACCESS_SECRET',
-      'cookii_dev_jwt_access_secret_super_secure_32chars'
+      'ZapEat_dev_jwt_access_secret_super_secure_32chars'
     );
   }
 

@@ -26,19 +26,19 @@ export function getAdminToken(): string | null {
   if (typeof document === 'undefined') {
     return process.env.ADMIN_AUTH_TOKEN || null;
   }
-  const match = document.cookie.match(new RegExp('(^| )cookii_admin_token=([^;]+)'));
+  const match = document.cookie.match(new RegExp('(^| )ZapEat_admin_token=([^;]+)'));
   return match ? decodeURIComponent(match[2]) : null;
 }
 
 export function setAdminToken(token: string, days = 7) {
   if (typeof document === 'undefined') return;
   const expires = new Date(Date.now() + days * 864e5).toUTCString();
-  document.cookie = `cookii_admin_token=${encodeURIComponent(token)}; expires=${expires}; path=/; SameSite=Lax`;
+  document.cookie = `ZapEat_admin_token=${encodeURIComponent(token)}; expires=${expires}; path=/; SameSite=Lax`;
 }
 
 export function clearAdminToken() {
   if (typeof document === 'undefined') return;
-  document.cookie = 'cookii_admin_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Lax';
+  document.cookie = 'ZapEat_admin_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Lax';
 }
 
 class ApiClient {
@@ -138,7 +138,7 @@ export const adminAuthApi = {
     } catch {
       // Offline fallback
       if (email.trim().length > 0 && pass.trim().length > 0) {
-        const mockToken = 'cookii_admin_jwt_' + Math.random().toString(36).substring(2);
+        const mockToken = 'ZapEat_admin_jwt_' + Math.random().toString(36).substring(2);
         setAdminToken(mockToken);
         return {
           success: true,

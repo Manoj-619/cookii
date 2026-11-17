@@ -14,11 +14,11 @@ export async function POST(request: NextRequest) {
     }
 
     // Default admin creds or accept valid admin emails
-    const validEmails = ['ops@zapeat.online', 'admin@zapeat.online', 'ops@cookii.in', 'admin@cookii.com', 'admin@cookii.in'];
+    const validEmails = ['ops@zapeat.online', 'admin@zapeat.online', 'ops@ZapEat.in', 'admin@ZapEat.com', 'admin@ZapEat.in'];
     const isValid =
       validEmails.includes(email.toLowerCase()) ||
       email.includes('@zapeat.') ||
-      email.includes('@cookii.') ||
+      email.includes('@ZapEat.') ||
       (password.length >= 6 && email.includes('@'));
 
     if (!isValid) {
@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create session token
-    const token = `cookii_admin_jwt_${Buffer.from(
+    const token = `ZapEat_admin_jwt_${Buffer.from(
       JSON.stringify({
         email,
         role: 'ADMIN',
@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
 
     // Set cookie
     response.cookies.set({
-      name: 'cookii_admin_token',
+      name: 'ZapEat_admin_token',
       value: token,
       httpOnly: false, // allow client-side hydration as well
       secure: process.env.NODE_ENV === 'production',
